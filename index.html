@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BOQ Pro الشامل | المنظومة الهندسية لحساب الكميات والمواصفات</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<!-- Optional online font removed so the application works without internet. -->
+<!-- Removed unused Tailwind CDN dependency: this app uses its own CSS and must run offline. -->
 <style>
 :root{--bg:#060a16;--pn:#0d1530;--ln:#1f2d57;--tx:#e6ecff;--mu:#8b9ac7;--cy:#22d3ee;--vi:#a78bfa;--go:#fbbf24;--ok:#34d399;--in:#0a1126}
 *{box-sizing:border-box}
@@ -124,17 +123,17 @@ tr.sub td{background:#101b42;font-weight:900;color:var(--ok);padding:8px}
    </div>
   </div>
   <div class="row" style="gap:7px">
-   <button class="btn" id="bNew">مشروع جديد</button>
-   <button class="btn p" id="bSave">حفظ المشروع</button>
-   <button class="btn" id="bXls">تصدير Excel</button>
-   <button class="btn p" id="bPrint">طباعة التقرير / PDF</button>
+   <button type="button" class="btn" id="bNew">مشروع جديد</button>
+   <button type="button" class="btn p" id="bSave">حفظ المشروع</button>
+   <button type="button" class="btn" id="bXls">تصدير Excel</button>
+   <button type="button" class="btn p" id="bPrint">طباعة التقرير / PDF</button>
   </div>
  </div>
 </header>
 <nav id="nav"></nav>
 <main id="main"></main>
 <div class="foot">
- <span>تصميم وبرمجة: <b>EngAMER</b></span>
+ <span>تصميم وبرمجة: <b>م/عبدالرحمن عامر</b></span>
  <span>للتواصل والاستشارات الهندسية والبرمجية:</span>
  <a href="tel:+967777136380" dir="ltr"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11 11 0 003.5.55 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11 11 0 00.55 3.5 1 1 0 01-.25 1z"/></svg>+967777136380</a>
  <a class="w" href="https://wa.me/967777136380" target="_blank" rel="noopener"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.2 14.3c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.800-1.100-4.600-4-4.700-4.200-.1-.2-1.100-1.500-1.100-2.800s.7-2 1-2.300c.2-.3.500-.3.700-.3h.5c.2 0 .4 0 .6.500l.8 2c.1.200.1.400 0 .5l-.4.600-.3.400c-.1.100-.3.300-.1.600.2.300.8 1.300 1.800 2.100 1.200 1 2.200 1.300 2.500 1.500.3.100.5.100.6-.1l.9-1.100c.2-.3.400-.2.700-.1l1.900.9c.3.100.5.200.5.300.1.200.1.800-.1 1.400z"/></svg>واتساب</a>
@@ -200,11 +199,11 @@ function applyTheme(){document.documentElement.dataset.theme=S.par.theme=='light
 Object.assign(TB,TBE);
 const TABS=[['pr','0. الإعدادات والأسعار'],['exc','1. الأعمال الترابية'],['con','2. الخرسانة'],['reb','3. حديد التسليح'],['wall','4. المباني'],['fin','5. التشطيبات'],['rm','6. كهرباء: الغرف'],['s1','7. كهرباء: التأسيس'],['s2','8. كهرباء: السحب'],['s3','9. كهرباء: التطبيق النهائي'],['s4','10. كهرباء: إضافات'],['pt','11. الحماية والأحمال'],['boq','12. الجدول النهائي الموحد']];
 function cell(t,i,c,v){const [k,,ty,o]=c,a=`data-t="${t}" data-i="${i}" data-k="${k}" data-ty="${ty}"`;if(ty[0]=='s')return`<select ${a}>${o.map(x=>`<option value="${x}" ${x==v?'selected':''}>${k=='grade'?gl(x):x}</option>`).join('')}</select>`;return`<input ${a} ${ty=='n'?'type="number" step="any" min="0"':''} value="${esc(v)}">`}
-function renderT(t){const T=TB[t];$('#tb-'+t).innerHTML=`<table><thead><tr><th>#</th>${T.cols.map(c=>`<th>${c[1]}</th>`).join('')}${T.out.map(o=>`<th>${o[1]}</th>`).join('')}<th>إجراءات</th></tr></thead><tbody>${S.tb[t].map((r,i)=>`<tr data-t="${t}" data-i="${i}"><td>${i+1}</td>${T.cols.map(c=>`<td>${cell(t,i,c,r[c[0]])}</td>`).join('')}${T.out.map(o=>`<td class="c" data-f="${o[0]}">0</td>`).join('')}<td style="white-space:nowrap"><button class="btn s" data-a="cp" data-t="${t}" data-i="${i}">نسخ</button> <button class="btn s d" data-a="rm" data-t="${t}" data-i="${i}">حذف</button></td></tr>`).join('')}</tbody><tfoot><tr><td colspan="${T.cols.length+1}">الإجمالي</td>${T.out.map(o=>`<td id="tot-${t}-${o[0]}"></td>`).join('')}<td></td></tr></tfoot></table>`;calc()}
-const sec=(t,id,extra='')=>`<div class="card"><h2>${t}</h2><div class="wrap" id="tb-${id}"></div><div style="margin-top:10px"><button class="btn p" data-a="add" data-t="${id}">+ إضافة بند / عنصر جديد</button></div>${extra}</div>`;
+function renderT(t){const T=TB[t];$('#tb-'+t).innerHTML=`<table><thead><tr><th>#</th>${T.cols.map(c=>`<th>${c[1]}</th>`).join('')}${T.out.map(o=>`<th>${o[1]}</th>`).join('')}<th>إجراءات</th></tr></thead><tbody>${S.tb[t].map((r,i)=>`<tr data-t="${t}" data-i="${i}"><td>${i+1}</td>${T.cols.map(c=>`<td>${cell(t,i,c,r[c[0]])}</td>`).join('')}${T.out.map(o=>`<td class="c" data-f="${o[0]}">0</td>`).join('')}<td style="white-space:nowrap"><button type="button" class="btn s" data-a="cp" data-t="${t}" data-i="${i}">نسخ</button> <button type="button" class="btn s d" data-a="rm" data-t="${t}" data-i="${i}">حذف</button></td></tr>`).join('')}</tbody><tfoot><tr><td colspan="${T.cols.length+1}">الإجمالي</td>${T.out.map(o=>`<td id="tot-${t}-${o[0]}"></td>`).join('')}<td></td></tr></tfoot></table>`;calc()}
+const sec=(t,id,extra='')=>`<div class="card"><h2>${t}</h2><div class="wrap" id="tb-${id}"></div><div style="margin-top:10px"><button type="button" class="btn p" data-a="add" data-t="${id}">+ إضافة بند / عنصر جديد</button></div>${extra}</div>`;
 const kv=l=>`<table class="kv">${l.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join('')}</table>`;
 function build(){
- $('#nav').innerHTML=TABS.map((t,i)=>`<button data-tab="${t[0]}" class="${i?'':'on'}">${t[1]}</button>`).join('');
+ $('#nav').innerHTML=TABS.map((t,i)=>`<button type="button" data-tab="${t[0]}" class="${i?'':'on'}">${t[1]}</button>`).join('');
  const inp=(g,k,l,v,ty='n')=>`<div class="fld"><label>${l}</label><input data-g="${g}" data-k="${k}" data-ty="${ty}" ${ty=='n'?'type="number" step="any"':''} value="${esc(v)}"></div>`;
  const fld=a=>{const[k,l,ty,,o]=a,v=S.par[k];return`<div class="fld"><label>${l}</label>${ty[0]=='s'?`<select data-g="par" data-k="${k}" data-ty="${ty}">${o.map(x=>`<option ${x==v?'selected':''}>${x}</option>`).join('')}</select>`:`<input data-g="par" data-k="${k}" data-ty="n" type="number" step="any" value="${esc(v)}">`}</div>`};
  const stg=s=>`<section class="panel" id="p-s${s}"><div class="card"><h2>${ST[s]} — مواد محسوبة تلقائياً (أدخل سعر الوحدة)</h2><div id="au-${s}"></div><div id="st-${s}" style="margin-top:12px"></div></div>${sec('إضافات يدوية من الأصناف','x'+s)}</section>`;
@@ -217,7 +216,7 @@ function build(){
  <section class="panel" id="p-reb">${sec('3. حديد التسليح','reb','<div id="s-reb" style="margin-top:12px"></div>')}</section>
  <section class="panel" id="p-wall">${sec('4. أعمال المباني (بلك/طوب)','wall')}${sec('فتحات الأبواب والشبابيك','open','<div id="s-wall" style="margin-top:12px"></div>')}</section>
  <section class="panel" id="p-fin">${sec('5. أعمال التشطيبات','fin','<div id="s-fin" style="margin-top:12px"></div>')}</section>
- <section class="panel" id="p-rm">${sec('الغرف وأبعادها والبعد عن الطبلون وعدد النقاط','rm','<div style="margin-top:10px"><button class="btn" data-a="r2f">↧ نقل مساحات الغرف إلى التشطيبات (سيراميك أرضيات)</button></div><p style="color:var(--mu);font-size:13px">انخفاض القسامة: المسافة بالسنتيمتر من أسفل السقف إلى غرفة التوزيع. النقاط الأفقية تُقدّر بمتوسط (الطول+العرض)/4 لكل نقطة.</p>')}</section>
+ <section class="panel" id="p-rm">${sec('الغرف وأبعادها والبعد عن الطبلون وعدد النقاط','rm','<div style="margin-top:10px"><button type="button" class="btn" data-a="r2f">↧ نقل مساحات الغرف إلى التشطيبات (سيراميك أرضيات)</button></div><p style="color:var(--mu);font-size:13px">انخفاض القسامة: المسافة بالسنتيمتر من أسفل السقف إلى غرفة التوزيع. النقاط الأفقية تُقدّر بمتوسط (الطول+العرض)/4 لكل نقطة.</p>')}</section>
  ${stg(1)}${stg(2)}${stg(3)}${stg(4)}
  <section class="panel" id="p-pt"><div class="card"><h2>الحماية والأحمال</h2><div id="prot"></div></div></section>
  
@@ -313,14 +312,26 @@ function model(){const m=S.meta,cur=S.par.cur,c=LASTC,e=LASTE,M=[],mk=(t,h,rows,
   if(S.tb['x'+s].length)mk('إضافات يدوية — '+ST[s],['الصنف','المواصفة','الوحدة','الكمية','سعر الوحدة','الإجمالي'],S.tb['x'+s].map((r,i)=>[r.item,r.spec,LASTE.C['x'+s][i].u,r.qty,r.price,rd(LASTE.C['x'+s][i].tot)]))}
  mk('الحماية والأحمال',['البيان','القيمة'],LASTE.prot);
  mk('فحص الدوائر',['الدائرة','المقطع مم²','تيار الحمل A','تحمل السلك A','القاطع A','الحالة'],LASTE.circ);
- 
+ return M;
 }
 function report(M){const H='background:#1e3a5f;color:#ffffff;font-weight:bold;border:1px solid #000;padding:5px;text-align:center',D='border:1px solid #000;padding:4px;text-align:center',F='background:#d9e2f3;font-weight:bold;border:1px solid #000;padding:5px;text-align:center',TT='font-size:14pt;font-weight:bold;background:#0b4f6c;color:#ffffff;padding:8px;text-align:center;border:1px solid #000',v=x=>typeof x=='number'?fmt(x,Number.isInteger(x)?0:2):esc(x);
- return M.map(t=>`<table dir="rtl" style="border-collapse:collapse;width:100%"><thead><tr><td colspan="${t.head.length}" style="${TT}">${t.title}</td></tr><tr>${t.head.map(h=>`<th style="${H}">${h}</th>`).join('')}</tr></thead><tbody>${t.rows.map(r=>`<tr>${r.map(c=>`<td style="${D}">${v(c)}</td>`).join('')}</tr>`).join('')}${t.foot?`<tr>${t.foot.map(c=>`<td style="${F}">${v(c)}</td>`).join('')}</tr>`:''}<tr><td colspan="${t.head.length}" style="border:none;height:14px">&nbsp;</td></tr></tbody></table>`).join('')+'<div style="text-align:center;font-weight:bold;padding:8px">تصميم وبرمجة: EngAMER &nbsp;|&nbsp; للتواصل والاستشارات الهندسية والبرمجية: +967777136380</div>'}
+ return M.map(t=>`<table dir="rtl" style="border-collapse:collapse;width:100%"><thead><tr><td colspan="${t.head.length}" style="${TT}">${t.title}</td></tr><tr>${t.head.map(h=>`<th style="${H}">${h}</th>`).join('')}</tr></thead><tbody>${t.rows.map(r=>`<tr>${r.map(c=>`<td style="${D}">${v(c)}</td>`).join('')}</tr>`).join('')}${t.foot?`<tr>${t.foot.map(c=>`<td style="${F}">${v(c)}</td>`).join('')}</tr>`:''}<tr><td colspan="${t.head.length}" style="border:none;height:14px">&nbsp;</td></tr></tbody></table>`).join('')+'<div style="text-align:center;font-weight:bold;padding:8px">تصميم وبرمجة: م/عبدالرحمن عامر &nbsp;|&nbsp; للتواصل والاستشارات الهندسية والبرمجية: +967777136380</div>'}
 
 function bindMeta(){$$('[data-g=meta]').forEach(i=>i.value=S.meta[i.dataset.k]??'')}
 function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>e.classList.remove('on'),2600)}
-function dl(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
+function dl(blob,name){
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download=name;a.style.display='none';document.body.appendChild(a);
+ try{a.click();toast('بدأ تنزيل ملف Excel. تحقق من مجلد التنزيلات ✓')}
+ catch(err){toast('تعذر بدء التنزيل. استخدم رابط التنزيل الظاهر أسفل الصفحة')}
+ a.remove();
+ const old=document.getElementById('downloadFallback');if(old)old.remove();
+ const fallback=document.createElement('a');fallback.id='downloadFallback';fallback.href=url;fallback.download=name;
+ fallback.textContent='اضغط هنا لتنزيل ملف Excel';
+ fallback.style.cssText='position:fixed;z-index:1000;bottom:64px;left:50%;transform:translateX(-50%);background:#0e7490;color:#fff;padding:12px 18px;border-radius:10px;font-weight:bold;text-decoration:none;box-shadow:0 4px 18px #0008';
+ document.body.appendChild(fallback);
+ setTimeout(()=>{URL.revokeObjectURL(url);if(fallback.isConnected)fallback.remove()},60000);
+}
 document.addEventListener('input',e=>{const d=e.target.dataset;if(!d)return;if(d.px!==undefined){S.px[d.px]=parseFloat(e.target.value)||0;calc();return}if(d.mx!==undefined){S.mix[d.mx][d.i]=parseFloat(e.target.value)||0;calc();return}if(!d.k)return;let v=e.target.value;if(d.ty=='n'||d.ty=='sn')v=parseFloat(v)||0;if(d.g)S[d.g][d.k]=v;else if(d.t)S.tb[d.t][d.i][d.k]=v;if(d.k=='theme')applyTheme();if(d.k=='cu'){build();bindMeta();return}calc()});
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
  if(d.tab){$$('nav button').forEach(x=>x.classList.toggle('on',x===b));$$('.panel').forEach(p=>p.classList.toggle('on',p.id=='p-'+d.tab));window.scrollTo({top:0,behavior:'smooth'})}
@@ -328,8 +339,14 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
  if(d.a&&d.t){const a=S.tb[d.t];if(d.a=='add')a.push({...TB[d.t].d});if(d.a=='cp')a.splice(+d.i+1,0,{...a[d.i]});if(d.a=='rm'){if(a.length<2&&!confirm('هذا آخر صف، هل تريد حذفه؟'))return;a.splice(d.i,1)}renderT(d.t)}});
 $('#bSave').onclick=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));toast('تم حفظ المشروع في المتصفح ✓')}catch(x){toast('تعذر الحفظ في المتصفح')}};
 $('#bNew').onclick=()=>{if(confirm('سيتم تصفير جميع البيانات. هل أنت متأكد؟')){const th=S.par.theme,cu=S.par.cu;S=mkDef();S.par.theme=th;S.par.cu=cu;AUS={};build();bindMeta();toast('تم إنشاء مشروع جديد')}};
-$('#bPrint').onclick=()=>{$('#rep').innerHTML=report(model());toast('جاري فتح نافذة الطباعة...');setTimeout(()=>window.print(),500)};
-$('#bXls').onclick=()=>{dl(buildXlsx(model()),(S.meta.proj||'BOQ-Full')+'.xlsx');toast('تم تصدير ملف Excel المنسق ✓')};
+$('#bPrint').onclick=()=>{
+ try{const html=report(model());if(!html)throw new Error('لم يتم إنشاء محتوى التقرير');$('#rep').innerHTML=html;toast('اختر طباعة أو حفظ بصيغة PDF من نافذة الطباعة');window.print()}
+ catch(err){console.error('Print error:',err);toast('تعذر تجهيز التقرير للطباعة: '+(err.message||err))}
+};
+$('#bXls').onclick=()=>{
+ try{const data=model();if(!Array.isArray(data)||!data.length)throw new Error('لا توجد بيانات للتصدير');const blob=buildXlsx(data);if(!blob||!blob.size)throw new Error('تعذر إنشاء ملف Excel');const safeName=(S.meta.proj||'BOQ-Full').replace(/[\\/:*?"<>|]/g,'-');dl(blob,safeName+'.xlsx')}
+ catch(err){console.error('Excel export error:',err);toast('تعذر تصدير Excel: '+(err.message||err))}
+};
 try{const s=localStorage.getItem(KEY)||localStorage.getItem('boqpro_v1');if(s){const o=JSON.parse(s),d=mkDef();if(o.tb&&(o.par||o.pr)){S={meta:{...d.meta,...o.meta},mix:{...d.mix,...(o.mix||{})},pr:{...d.pr,...(o.pr||{})},px:o.px||{},par:{...d.par,...(o.par||{})},tb:{...d.tb,...o.tb}};S.tb.con.forEach(r=>{r.grade=({C15:'17',C20:'21',C25:'25',C30:'30'})[r.grade]||r.grade})}}}catch(x){}
 applyTheme();build();bindMeta();
 
@@ -354,7 +371,7 @@ function buildXlsx(TM){
   return n?`<c r="${ref}" s="${s}"><v>${v}</v></c>`:(v===''||v==null)?`<c r="${ref}" s="${s}"/>`:`<c r="${ref}" s="${s}" t="inlineStr"><is><t xml:space="preserve">${xe(v)}</t></is></c>`};
  const row=(a,k,h)=>{r++;rows+=`<row r="${r}"${h?` ht="${h}" customHeight="1"`:''}>${a.map((v,c)=>cell(c,v,k)).join('')}</row>`};
  TM.forEach(t=>{const w=t.head.length;row([t.title,...Array(w-1).fill('')],'t',26);if(w>1)mg.push(`A${r}:${colL(w-1)}${r}`);row(t.head,'h',22);t.rows.forEach(a=>row(a,'b'));if(t.foot)row(t.foot,'f');r++});
- row(['تصميم وبرمجة: EngAMER  |  للتواصل والاستشارات الهندسية والبرمجية: +967777136380','','','','',''],'f',24);mg.push(`A${r}:F${r}`);
+ row(['تصميم وبرمجة: م/عبدالرحمن عامر  |  للتواصل والاستشارات الهندسية والبرمجية: +967777136380','','','','',''],'f',24);mg.push(`A${r}:F${r}`);
  const cols=[8,34,...Array(16).fill(14)].map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('');
  const X='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',NS='http://schemas.openxmlformats.org/spreadsheetml/2006/main';
  const xf=(nf,fo,fi,b,al)=>`<xf numFmtId="${nf}" fontId="${fo}" fillId="${fi}" borderId="${b}" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>`;
