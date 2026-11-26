@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta name="google-site-verification" content="3mOcyXtP-7CV5u8DWfeU1eBxItYDKtoilk8Estwu928" />
+<title>BOQ Pro الشامل | المنظومة الهندسية لحساب الكميات والمواصفات</title>
+<!-- Optional online font removed so the application works without internet. -->
+<!-- Removed unused Tailwind CDN dependency: this app uses its own CSS and must run offline. -->
+<style>
+:root{--bg:#060a16;--pn:#0d1530;--ln:#1f2d57;--tx:#e6ecff;--mu:#8b9ac7;--cy:#22d3ee;--vi:#a78bfa;--go:#fbbf24;--ok:#34d399;--in:#0a1126}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Cairo','Tajawal',sans-serif;background:var(--bg);color:var(--tx);padding-bottom:64px;min-height:100vh}
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(900px 500px at 85% -10%,#1b2a6b66,transparent),radial-gradient(700px 500px at 0% 100%,#4c1d9555,transparent),var(--bg)}
+.bg:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(circle at 50% 30%,#000,transparent 75%)}
+.bg i{position:absolute;left:0;height:2px;width:55vw;border-radius:2px;opacity:0;animation:fly linear infinite}
+@keyframes fly{0%{transform:translateX(-70vw) rotate(-14deg);opacity:0}12%{opacity:.9}88%{opacity:.9}100%{transform:translateX(150vw) rotate(-14deg);opacity:0}}
+header{position:sticky;top:0;z-index:30;background:#070c1ce8;backdrop-filter:blur(12px);padding:10px 18px}
+header:after,.foot:before{content:"";position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cy),var(--vi),var(--go),transparent);background-size:200% 100%;animation:slide 4s linear infinite}
+header:after{bottom:0}.foot:before{top:0}
+@keyframes slide{to{background-position:-200% 0}}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:46px;height:46px;filter:drop-shadow(0 0 8px var(--cy))}
+h1{font-size:clamp(14px,2.2vw,21px);margin:0;font-weight:900;background:linear-gradient(90deg,#fff,var(--cy));-webkit-background-clip:text;background-clip:text;color:transparent}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.meta input{width:150px}
+input,select{background:var(--in);color:var(--tx);border:1px solid var(--ln);border-radius:8px;padding:7px 9px;font:600 13px 'Cairo';width:100%;min-width:62px;transition:.2s}
+input:focus,select:focus{outline:0;border-color:var(--cy);box-shadow:0 0 0 3px #22d3ee33,0 0 14px #22d3ee55}
+.btn{cursor:pointer;border:1px solid var(--ln);background:#101a3b;color:var(--tx);border-radius:10px;padding:8px 13px;font:700 13px 'Cairo';transition:.25s;position:relative;overflow:hidden}
+.btn:hover{border-color:var(--cy);box-shadow:0 0 16px #22d3ee66;transform:translateY(-2px)}
+.btn:before{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,#ffffff40,transparent);transform:skewX(-20deg);transition:.6s}
+.btn:hover:before{left:130%}
+.btn.p{background:linear-gradient(135deg,#0891b2,#6d28d9);border-color:transparent}
+.btn.d{color:#fb7185}.btn.s{padding:4px 9px;font-size:12px}
+nav{display:flex;gap:6px;overflow-x:auto;padding:12px 18px;scrollbar-width:thin}
+nav button{flex:none;cursor:pointer;color:var(--mu);background:transparent;border:1px solid transparent;border-radius:12px;padding:9px 14px;font:700 13px 'Cairo';position:relative;transition:.3s}
+nav button:hover{color:#fff;background:#ffffff0d}
+nav button.on{color:#fff;background:linear-gradient(135deg,#0e7490aa,#5b21b6aa);border-color:var(--cy);box-shadow:0 0 18px #22d3ee55,inset 0 0 12px #22d3ee22}
+nav button.on:after{content:"";position:absolute;right:15%;left:15%;bottom:-2px;height:2px;background:var(--cy);box-shadow:0 0 10px var(--cy),0 0 22px var(--cy);border-radius:2px}
+main{padding:0 18px 20px;max-width:1500px;margin:auto}
+.panel{display:none}.panel.on{display:block;animation:in .55s cubic-bezier(.2,.8,.2,1)}
+@keyframes in{from{opacity:0;transform:translateX(-26px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+.card{background:linear-gradient(160deg,#0f1a3d,#0a1230);border:1px solid var(--ln);border-radius:16px;padding:16px;margin-bottom:16px;position:relative;box-shadow:0 10px 30px #0006}
+h2{margin:0 0 12px;font-size:17px;color:var(--cy);display:flex;gap:8px;align-items:center}
+h2:before{content:"";width:4px;height:20px;background:linear-gradient(var(--cy),var(--vi));border-radius:3px;box-shadow:0 0 10px var(--cy)}
+.wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--ln)}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+th{background:#131f4a;color:#b9c6f2;padding:9px 8px;font-weight:700;white-space:nowrap}
+td{padding:5px;border-top:1px solid #16224a;text-align:center}
+tbody tr{transition:.2s}tbody tr:hover{background:#22d3ee0f}
+td.c{color:var(--go);font-weight:700;white-space:nowrap;padding:5px 10px}
+tfoot td{background:#101b42;font-weight:900;color:var(--ok);padding:8px}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.fld label{display:block;font-size:12px;color:var(--mu);margin-bottom:3px}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:16px}
+.k{padding:16px;border-radius:16px;background:#0d1634;position:relative;overflow:hidden;border:1px solid var(--ln)}
+.k:after{content:"";position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(100deg,transparent,#22d3ee22,transparent);animation:sh 5s infinite}
+@keyframes sh{to{left:160%}}
+.k b{display:block;font-size:26px;color:#fff;text-shadow:0 0 14px var(--cy)}
+.k span{color:var(--mu);font-size:13px}
+.k.t b{color:var(--go);text-shadow:0 0 14px var(--go)}
+.kv{width:100%;min-width:0}.kv td{text-align:right;padding:7px 10px}.kv td:last-child{color:var(--go);font-weight:700;text-align:left}
+.foot{position:fixed;bottom:0;left:0;right:0;z-index:40;background:#070c1cf2;backdrop-filter:blur(10px);padding:10px 16px;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:center;font-size:13px}
+.foot a{color:var(--cy);text-decoration:none;font-weight:700;display:inline-flex;gap:5px;align-items:center}
+.foot a:hover{text-shadow:0 0 10px var(--cy)}.foot a.w{color:#25d366}
+#toast{position:fixed;top:84px;left:50%;transform:translate(-50%,-30px);background:#052e2b;border:1px solid var(--ok);color:#a7f3d0;padding:10px 20px;border-radius:12px;opacity:0;pointer-events:none;transition:.4s;z-index:99;box-shadow:0 0 22px #34d39966;font-weight:700}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+/* الوضع الفاتح */
+:root[data-theme=light]{--bg:#eef2fa;--pn:#fff;--ln:#c9d4ea;--tx:#101c3a;--mu:#51618a;--cy:#0b7285;--vi:#6d28d9;--go:#b45309;--ok:#047857;--in:#fff;color-scheme:light}
+[data-theme=light] .bg{background:radial-gradient(900px 500px at 85% -10%,#bfd4ff99,transparent),radial-gradient(700px 500px at 0% 100%,#e0d4ff88,transparent),var(--bg)}
+[data-theme=light] .bg:before{background-image:linear-gradient(#0b1f4d12 1px,transparent 1px),linear-gradient(90deg,#0b1f4d12 1px,transparent 1px)}
+[data-theme=light] .bg i{mix-blend-mode:multiply}
+[data-theme=light] header,[data-theme=light] .foot{background:#ffffffee}
+[data-theme=light] h1{background:linear-gradient(90deg,#0b1f4d,var(--cy));-webkit-background-clip:text;background-clip:text}
+[data-theme=light] .card{background:linear-gradient(160deg,#fff,#f4f7fd);box-shadow:0 8px 24px #1d2f6a1a}
+[data-theme=light] th{background:#dfe7f7;color:#14264f}
+[data-theme=light] td{border-top-color:#dbe3f3}
+[data-theme=light] tfoot td{background:#e6edfa}
+[data-theme=light] tbody tr:hover{background:#0891b214}
+[data-theme=light] .btn{background:#fff}
+[data-theme=light] .btn.p{background:linear-gradient(135deg,#0891b2,#6d28d9);color:#fff}
+[data-theme=light] .btn:before{background:linear-gradient(100deg,transparent,#0891b244,transparent)}
+[data-theme=light] nav button:hover{background:#0b1f4d0d}
+[data-theme=light] nav button.on{color:#fff;background:linear-gradient(135deg,#0e7490,#5b21b6)}
+[data-theme=light] .k{background:#fff}
+[data-theme=light] .k b{color:#0b1f4d;text-shadow:none}
+[data-theme=light] .k.t b{color:var(--go)}
+[data-theme=light] #toast{background:#ecfdf5;color:#065f46}
+.pr{display:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+#rep{display:none;direction:rtl;color:#000;font-family:'Cairo',sans-serif;font-size:11pt}
+@media print{
+ @page{size:A4;margin:12mm 10mm 18mm}
+ body{background:#fff;color:#000;padding:0}
+ .bg,header,nav,main,#toast{display:none!important}
+ #rep{display:block!important}
+ #rep table{page-break-inside:auto}#rep tr{page-break-inside:avoid}#rep thead{display:table-header-group}
+ .foot{background:#fff;color:#000;border-top:1px solid #000;backdrop-filter:none;padding:6px}.foot:before{display:none}.foot a,.foot a.w{color:#000}
+}
+.k{min-width:0}
+tr.sec td{background:#16275e;color:#fff;font-weight:900;text-align:right;padding:9px}
+tr.sub td{background:#101b42;font-weight:900;color:var(--ok);padding:8px}
+[data-theme=light] tr.sec td{background:#0b4f6c}
+[data-theme=light] tr.sub td{background:#e6edfa}
+</style>
+</head>
+<body>
+<div class="bg" id="bg"></div>
+<header>
+ <div class="row">
+  <div>
+   <div class="brand">
+    <svg class="logo" viewBox="0 0 48 48" fill="none" stroke="#22d3ee" stroke-width="2.2"><path d="M6 42h36M10 42V14l14-8 14 8v28M17 42V24h6v18M27 20h7M27 27h7M27 34h7M17 18h6"/></svg>
+    <h1>المنظومة الهندسية لحساب الكميات والمواصفات (BOQ Pro)</h1>
+   </div>
+   <div class="meta">
+    <input data-g="meta" data-k="proj" placeholder="اسم المشروع">
+    <input data-g="meta" data-k="owner" placeholder="اسم المالك">
+    <input data-g="meta" data-k="date" type="date" title="تاريخ الحصر">
+    <input data-g="meta" data-k="area" data-ty="n" type="number" placeholder="مساحة البناء م²" title="مساحة البناء الإجمالية م²">
+    <input data-g="meta" data-k="bL" data-ty="n" type="number" placeholder="طول المبنى م">
+    <input data-g="meta" data-k="bW" data-ty="n" type="number" placeholder="عرض المبنى م">
+    <input data-g="meta" data-k="bH" data-ty="n" type="number" placeholder="ارتفاع المبنى م">
+   </div>
+  </div>
+  <div class="row" style="gap:7px">
+   <button type="button" class="btn" id="bNew">مشروع جديد</button>
+   <button type="button" class="btn" id="bResetAll" style="border-color:#ef4444;color:#fecaca">تصفير جميع البيانات</button>
+   <button type="button" class="btn p" id="bSave">حفظ المشروع</button>
+   <button type="button" class="btn" id="bXls">تصدير Excel</button>
+   <button type="button" class="btn p" id="bPrint">طباعة التقرير / PDF</button>
+  </div>
+ </div>
+</header>
+<nav id="nav"></nav>
+<main id="main"></main>
+<div class="foot">
+ <span>تصميم وبرمجة: <b>م/عبدالرحمن عامر</b></span>
+ <span>للتواصل والاستشارات الهندسية والبرمجية:</span>
+ <a href="tel:+967777136380" dir="ltr"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11 11 0 003.5.55 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11 11 0 00.55 3.5 1 1 0 01-.25 1z"/></svg>+967777136380</a>
+ <a class="w" href="https://wa.me/967777136380" target="_blank" rel="noopener"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.2 14.3c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.800-1.100-4.600-4-4.700-4.200-.1-.2-1.100-1.500-1.100-2.800s.7-2 1-2.300c.2-.3.500-.3.700-.3h.5c.2 0 .4 0 .6.500l.8 2c.1.200.1.400 0 .5l-.4.600-.3.400c-.1.100-.3.300-.1.600.2.300.8 1.300 1.800 2.100 1.200 1 2.200 1.300 2.500 1.500.3.100.5.100.6-.1l.9-1.100c.2-.3.400-.2.700-.1l1.900.9c.3.100.5.200.5.300.1.200.1.800-.1 1.400z"/></svg>واتساب</a>
+</div>
+<div id="toast"></div>
+<div id="rep"></div>
+<script>
+
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const fmt=(n,d=2)=>(+n||0).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const KEY='boqfull_v1';
+// ---------- خلفية الخيوط الضوئية ----------
+(()=>{const b=$('#bg'),cl=['#22d3ee','#a78bfa','#fbbf24','#34d399'];for(let i=0;i<9;i++){const e=document.createElement('i'),c=cl[i%4];e.style.cssText=`top:${8+i*10}%;background:linear-gradient(90deg,transparent,${c},transparent);box-shadow:0 0 12px ${c};animation-duration:${6+Math.random()*7}s;animation-delay:${-Math.random()*12}s;width:${35+Math.random()*40}vw`;b.appendChild(e)}})();
+const PR=[['steel','سعر طن الحديد','طن',2800],['ready','سعر م³ خرسانة جاهزة','م³',300],['cement','سعر كيس الأسمنت (50كجم)','كيس',9],['sand','سعر م³ الرمل','م³',60],['gravel','سعر م³ الكري/الحصى','م³',70],['blk','سعر الألف بلك','ألف',1500],['exc','سعر م³ الحفر','م³',8],['fill','سعر م³ الردم والدمك','م³',6],['plaster','سعر م² اللياسة','م²',12],['paint','سعر م² الدهان','م²',6],['cf','سعر م² سيراميك أرضيات','م²',35],['cw','سعر م² سيراميك جدران','م²',35],['skirt','سعر م.ط الوزرات','م.ط',10],['wp','سعر م² العزل المائي','م²',18],['th','سعر م² العزل الحراري','م²',15]];
+const PA=[['wSteel','نسبة هالك الحديد %',5],['wCon','نسبة هالك الخرسانة %',3],['wBlk','نسبة هالك البلك %',5],['swell','معامل الانتفاش',1.25],['comp','معامل الدمك (حجم الردم المفكوك)',1.15],['hRatio','نسبة الخرسانة الصافية في الهوردي',0.6],['hBlk','عدد بلوكات الهوردي / م²',9.6]];
+const GR=[17,21,25,28,30,35],MIX0={17:[6,.45,.9],21:[6.5,.45,.9],25:[7,.45,.9],28:[7.5,.43,.86],30:[8,.42,.84],35:[9,.42,.84]};
+const gl=g=>{const u=(typeof S!=='undefined'&&S.par&&S.par.cu)||'MPa';return u=='kg/cm²'?Math.round(g*10.197)+' kg/cm²':u=='psi'?Math.round(g*145.04)+' psi':g+' MPa'};
+const mkDefC=()=>({meta:{proj:'',owner:'',date:new Date().toISOString().slice(0,10),area:200,bL:'',bW:'',bH:''},
+ mix:JSON.parse(JSON.stringify(MIX0)),
+ par:Object.assign({cur:'ريال',mix:'site',theme:'dark',cu:'MPa'},Object.fromEntries(PA.map(a=>[a[0],a[2]]))),
+ pr:Object.fromEntries(PR.map(a=>[a[0],a[3]])),
+ tb:{exc:[{name:'ح1',L:2,W:2,D:1.5,N:10}],con:[{name:'ق1',type:'قاعدة',grade:'25',L:1.8,W:1.8,H:.5,N:10},{name:'ع1',type:'عمود',grade:'25',L:.3,W:.3,H:3.2,N:10},{name:'س1',type:'سقف مصمت',grade:'25',L:10,W:10,H:.15,N:1}],
+ reb:[{el:'ق1',dia:16,len:12,n:20,cnt:10},{el:'ع1',dia:16,len:3.5,n:8,cnt:10},{el:'أساور',dia:8,len:1.2,n:25,cnt:10}],
+ wall:[{name:'خارجي',L:40,H:3,th:20,N:1},{name:'داخلي',L:30,H:3,th:10,N:1}],open:[{name:'باب',W:.9,H:2.1,N:6},{name:'شباك',W:1.2,H:1.2,N:8}],
+ fin:[{name:'صالة',type:'سيراميك أرضيات',L:6,W:5,N:1,ded:0},{name:'جدران',type:'دهان',L:70,W:3,N:1,ded:15}]}});
+const CT=['قاعدة','لبشة/شداد','رقبة عمود','خرسانة عادية','عمود','جدار قص','كمرة','سقف مصمت','فلات سلاب','سقف هوردي'],BUR=['قاعدة','لبشة/شداد','رقبة عمود','خرسانة عادية'];
+const MF={10:.012,15:.018,20:.024};
+const FT=['لياسة داخلية','لياسة خارجية','دهان','سيراميك أرضيات','سيراميك جدران','وزرات','عزل مائي','عزل حراري'],FK={'لياسة داخلية':'plaster','لياسة خارجية':'plaster','دهان':'paint','سيراميك أرضيات':'cf','سيراميك جدران':'cw','وزرات':'skirt','عزل مائي':'wp','عزل حراري':'th'};
+const TB={
+ exc:{t:'نماذج الحفر',cols:[['name','النموذج','t'],['L','الطول م','n'],['W','العرض م','n'],['D','العمق م','n'],['N','العدد','n']],out:[['vol','الحجم م³']],f:r=>({vol:r.L*r.W*r.D*r.N}),d:{name:'ح',L:1,W:1,D:1,N:1}},
+ con:{t:'عناصر الخرسانة',cols:[['name','العنصر','t'],['type','النوع','s',CT],['grade','مقاومة الخرسانة','s',GR],['L','الطول م','n'],['W','العرض م','n'],['H','الارتفاع/السماكة م','n'],['N','العدد','n']],out:[['vol','الخرسانة الصافية م³'],['blk','عدد البلوكات']],f:r=>{const a=r.L*r.W*r.N,h=r.type=='سقف هوردي';return{vol:h?a*r.H*S.par.hRatio:a*r.H,blk:h?Math.ceil(a*S.par.hBlk):0}},d:{name:'',type:'قاعدة',grade:'25',L:1,W:1,H:.5,N:1}},
+ reb:{t:'جدول تفريد الحديد (BBS)',cols:[['el','العنصر الإنشائي','t'],['dia','القطر Φ','sn',[8,10,12,14,16,18,20,25,32]],['len','طول السيخ م','n'],['n','عدد الأسياخ بالعنصر','n'],['cnt','تكرار العنصر','n']],out:[['kg','الوزن كجم']],f:r=>({kg:r.dia*r.dia/162.2*r.len*r.n*r.cnt}),d:{el:'',dia:12,len:1,n:1,cnt:1}},
+ wall:{t:'الجدران',cols:[['name','الجدار','t'],['L','الطول م','n'],['H','الارتفاع م','n'],['th','السمك سم','sn',[10,15,20]],['N','العدد','n']],out:[['area','المساحة م²']],f:r=>({area:r.L*r.H*r.N}),d:{name:'',L:1,H:3,th:20,N:1}},
+ open:{t:'فتحات الأبواب والشبابيك (تُخصم تلقائياً)',cols:[['name','الفتحة','t'],['W','العرض م','n'],['H','الارتفاع م','n'],['N','العدد','n']],out:[['area','المساحة م²']],f:r=>({area:r.W*r.H*r.N}),d:{name:'',W:1,H:1,N:1}},
+ fin:{t:'بنود التشطيبات',cols:[['name','الموقع/البند','t'],['type','نوع العمل','s',FT],['L','الطول م','n'],['W','العرض/الارتفاع م','n'],['N','العدد','n'],['ded','خصم فتحات م²','n']],out:[['qty','الكمية',1],['u','الوحدة',1]],f:r=>{const s=r.type=='وزرات';return{qty:s?r.L*r.N:Math.max(0,r.L*r.W*r.N-r.ded),u:s?'م.ط':'م²'}},d:{name:'',type:'لياسة داخلية',L:1,W:1,N:1,ded:0}}
+};
+const rd=v=>Math.round(v*100)/100,esc=v=>String(v??'').replace(/"/g,'&quot;');
+const mkDef=()=>mkDefC();
+let S=mkDef(),LASTC={},LASTK=[];
+function applyTheme(){document.documentElement.dataset.theme=S.par.theme=='light'?'light':'dark'}
+const TABS=[['ai','🤖 مساعد المخطط (AI)'],['pr','0. الإعدادات والأسعار'],['exc','1. الأعمال الترابية'],['con','2. الخرسانة'],['reb','3. حديد التسليح'],['wall','4. المباني'],['fin','5. التشطيبات'],['boq','6. الجدول النهائي']];
+function cell(t,i,c,v){const [k,,ty,o]=c,a=`data-t="${t}" data-i="${i}" data-k="${k}" data-ty="${ty}"`;if(ty[0]=='s')return`<select ${a}>${o.map(x=>`<option value="${x}" ${x==v?'selected':''}>${k=='grade'?gl(x):x}</option>`).join('')}</select>`;return`<input ${a} ${ty=='n'?'type="number" step="any" min="0"':''} value="${esc(v)}">`}
+function renderT(t){const T=TB[t];$('#tb-'+t).innerHTML=`<table><thead><tr><th>#</th>${T.cols.map(c=>`<th>${c[1]}</th>`).join('')}${T.out.map(o=>`<th>${o[1]}</th>`).join('')}<th>إجراءات</th></tr></thead><tbody>${S.tb[t].map((r,i)=>`<tr data-t="${t}" data-i="${i}"><td>${i+1}</td>${T.cols.map(c=>`<td>${cell(t,i,c,r[c[0]])}</td>`).join('')}${T.out.map(o=>`<td class="c" data-f="${o[0]}">0</td>`).join('')}<td style="white-space:nowrap"><button type="button" class="btn s" data-a="cp" data-t="${t}" data-i="${i}">نسخ</button> <button type="button" class="btn s d" data-a="rm" data-t="${t}" data-i="${i}">حذف</button></td></tr>`).join('')}</tbody><tfoot><tr><td colspan="${T.cols.length+1}">الإجمالي</td>${T.out.map(o=>`<td id="tot-${t}-${o[0]}"></td>`).join('')}<td></td></tr></tfoot></table>`;calc()}
+const sec=(t,id,extra='')=>`<div class="card"><h2>${t}</h2><div class="wrap" id="tb-${id}"></div><div style="margin-top:10px"><button type="button" class="btn p" data-a="add" data-t="${id}">+ إضافة بند / عنصر جديد</button></div>${extra}</div>`;
+const kv=l=>`<table class="kv">${l.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join('')}</table>`;
+function build(){
+ $('#nav').innerHTML=TABS.map((t,i)=>`<button type="button" data-tab="${t[0]}" class="${i?'':'on'}">${t[1]}</button>`).join('');
+ const inp=(g,k,l,v,ty='n')=>`<div class="fld"><label>${l}</label><input data-g="${g}" data-k="${k}" data-ty="${ty}" ${ty=='n'?'type="number" step="any"':''} value="${esc(v)}"></div>`;
+ $('#main').innerHTML=`<section class="panel on" id="p-ai"><div class="card"><h2>مساعد الذكاء الاصطناعي: تحليل المخطط</h2><div id="aiChat" style="height:260px;overflow:auto;border:1px solid var(--ln);border-radius:12px;padding:8px;background:var(--in)"></div><div class="grid g2" style="margin-top:10px"><div class="fld"><label>ارفع المخطط (صورة أو PDF)</label><input type="file" id="aiFile" accept="image/*,application/pdf"><span id="aiFn" style="color:var(--ok);font-size:13px"></span></div><div class="fld"><label>رسالة (اختياري)</label><textarea id="aiMsg" rows="2" style="width:100%;background:var(--in);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:8px" placeholder="مثال: الطابق الأرضي فقط، جدران 20 سم"></textarea></div></div><div style="margin-top:10px"><button type="button" class="btn p" data-ai="send">إرسال وتحليل</button></div><div id="aiPrev"></div></div>
+ <div class="card"><h2>الوضع اليدوي (بدون خادم)</h2><p style="color:var(--mu);font-size:13px">انسخ التعليمات وأعطها مع المخطط لأي ذكاء اصطناعي ثم الصق الرد (JSON) هنا.</p><button type="button" class="btn" data-ai="copy">نسخ التعليمات</button><textarea id="aiJson" rows="6" dir="ltr" style="width:100%;margin-top:10px;background:var(--in);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:8px" placeholder="الصق رد JSON هنا"></textarea><div style="margin-top:10px"><button type="button" class="btn" data-ai="prev">معاينة</button></div></div></section>
+ <section class="panel" id="p-pr"><div class="card"><h2>العملة والأسعار</h2><div class="grid g2"><div class="fld"><label>العملة</label><select data-g="par" data-k="cur" data-ty="s">${['ريال','دولار','جنيه','درهم','دينار'].map(x=>`<option ${x==S.par.cur?'selected':''}>${x}</option>`).join('')}</select></div><div class="fld"><label>طريقة الخرسانة</label><select data-g="par" data-k="mix" data-ty="s"><option value="site" ${S.par.mix=='site'?'selected':''}>خلط بالموقع (أسمنت + رمل + كري)</option><option value="ready" ${S.par.mix=='ready'?'selected':''}>خرسانة جاهزة</option></select></div><div class="fld"><label>وضع العرض</label><select data-g="par" data-k="theme" data-ty="s"><option value="dark" ${S.par.theme!='light'?'selected':''}>🌙 داكن (Dark)</option><option value="light" ${S.par.theme=='light'?'selected':''}>☀️ فاتح (Light)</option></select></div><div class="fld"><label>وحدة قياس مقاومة الخرسانة</label><select data-g="par" data-k="cu" data-ty="s">${['MPa','kg/cm²','psi'].map(x=>`<option ${x==S.par.cu?'selected':''}>${x}</option>`).join('')}</select></div>${PR.map(a=>inp('pr',a[0],`${a[1]} / ${a[2]}`,S.pr[a[0]])).join('')}</div></div>
+ <div class="card"><h2>نسب الهالك والمعاملات</h2><div class="grid g2">${PA.map(a=>inp('par',a[0],a[1],S.par[a[0]])).join('')}</div></div>
+ <div class="card"><h2>مقاومة الخرسانة (حسب الكود) ومكونات الخلطة لكل م³</h2><div class="wrap"><table><thead><tr><th>المقاومة المميزة</th><th>أسمنت (كيس 50 كجم)</th><th>رمل م³</th><th>كري م³</th></tr></thead><tbody>${GR.map(g=>`<tr><td><b>${gl(g)}</b></td>${[0,1,2].map(i=>`<td><input type="number" step="any" data-mx="${g}" data-i="${i}" value="${S.mix[g][i]}"></td>`).join('')}</tr>`).join('')}</tbody></table></div><p style="color:var(--mu);font-size:13px">المقاومة الأساسية بوحدة MPa (N/mm²) وتتحول الوحدات الأخرى تلقائياً (1 MPa ≈ 10.197 كجم/سم²). المكونات قيم تقديرية قابلة للتعديل.</p></div></section>
+ <section class="panel" id="p-exc">${sec('1. الحفر','exc','<div id="s-exc" style="margin-top:12px"></div>')}</section>
+ <section class="panel" id="p-con">${sec('2. الخرسانة العادية والمسلحة (م³)','con','<div id="s-con" style="margin-top:12px"></div>')}</section>
+ <section class="panel" id="p-reb">${sec('3. حديد التسليح','reb','<div id="s-reb" style="margin-top:12px"></div>')}</section>
+ <section class="panel" id="p-wall">${sec('4. أعمال المباني (بلك/طوب)','wall')}${sec('فتحات الأبواب والشبابيك','open','<div id="s-wall" style="margin-top:12px"></div>')}</section>
+ <section class="panel" id="p-fin">${sec('5. أعمال التشطيبات','fin','<div id="s-fin" style="margin-top:12px"></div>')}</section>
+ 
+ <section class="panel" id="p-boq"><div class="kpi" id="kpi"></div><div class="card"><h2>جدول الكميات والتكلفة النهائي الموحد (الأعمال المدنية)</h2><div class="wrap"><table id="boq"></table></div></div></section>`;
+ Object.keys(TB).forEach(renderT);bindMeta();
+}
+function calcTables(){const C={},T={};for(const t in TB){C[t]=S.tb[t].map(r=>TB[t].f(r));T[t]={};TB[t].out.forEach(([k,,x])=>{T[t][k]=x?0:C[t].reduce((s,c)=>s+(+c[k]||0),0)})}
+ $$('tr[data-t]').forEach(tr=>{const c=(C[tr.dataset.t]||[])[tr.dataset.i]||{};tr.querySelectorAll('[data-f]').forEach(td=>{const v=c[td.dataset.f];td.textContent=typeof v=='number'?fmt(v,td.dataset.f=='blk'?0:3):v})});
+ for(const t in TB)TB[t].out.forEach(([k,,x])=>{const e=$(`#tot-${t}-${k}`);if(e)e.textContent=x?'':fmt(T[t][k],k=='blk'?0:3)});
+ return{C,T}}
+function calcC(C,T){const P=S.par,pr=S.pr;
+ const cur=P.cur,B=[];let n=0;const add=(d,u,q,p)=>{if(q>0)B.push([++n,d,u,q,p,q*p])};
+ // ترابية
+ const ex=T.exc.vol,bur=C.con.reduce((s,c,i)=>s+(BUR.includes(S.tb.con[i].type)?c.vol:0),0),net=Math.max(0,ex-bur),loose=net*P.comp,surplus=Math.max(0,ex*P.swell-loose);
+ $('#s-exc').innerHTML=kv([['إجمالي الحفر م³',fmt(ex)],['خرسانة مدفونة (قواعد/لبشة/رقاب/عادية) م³',fmt(bur)],['صافي الردم م³',fmt(net)],['حجم الردم بعد معامل الدمك م³',fmt(loose)],['الحفر بعد الانتفاش م³',fmt(ex*P.swell)],['ناتج فائض للترحيل م³',fmt(surplus)]]);
+ add('أعمال الحفر','م³',ex,pr.exc);add('أعمال الردم والدمك','م³',loose,pr.fill);
+ // خرسانة
+ const G={};C.con.forEach((c,i)=>{const g=S.tb.con[i].grade;G[g]=(G[g]||0)+c.vol});
+ let cem=0,sd=0,gr=0,cc=0,cv=0,rows=[];
+ for(const g in G){const v=G[g]*(1+P.wCon/100),m=S.mix[g]||MIX0[g]||[0,0,0];cv+=v;const a=v*m[0],b=v*m[1],d=v*m[2];cem+=a;sd+=b;gr+=d;cc+=P.mix=='ready'?v*pr.ready:a*pr.cement+b*pr.sand+d*pr.gravel;rows.push([`مقاومة ${gl(g)}: خرسانة شاملة الهالك م³`,fmt(v)],[`— أكياس أسمنت`,Math.ceil(a)],[`— رمل م³`,fmt(b)],[`— كري م³`,fmt(d)])}
+ $('#s-con').innerHTML=kv([['إجمالي الخرسانة الصافية م³',fmt(T.con.vol)],['إجمالي عدد بلوكات الهوردي',fmt(T.con.blk,0)],...rows]);
+ if(cv)add(P.mix=='ready'?'خرسانة جاهزة (شاملة الهالك)':'خرسانة بالموقع: أسمنت + رمل + كري','م³',cv,cc/cv);
+ add('بلوك هوردي للأسقف','قطعة',T.con.blk*(1+P.wBlk/100),pr.blk/1000);
+ // حديد
+ const D={};C.reb.forEach((c,i)=>{const d=S.tb.reb[i].dia;D[d]=(D[d]||0)+c.kg});let st=0,sr=[];
+ Object.keys(D).sort((a,b)=>a-b).forEach(d=>{const k=D[d],kw=k*(1+P.wSteel/100);st+=kw;sr.push([`Φ${d} مم (صافي ${fmt(k)} كجم)`,`${fmt(kw)} كجم = ${fmt(kw/1000,3)} طن`]);add(`حديد تسليح Φ${d} مم (شامل الهالك)`,'طن',kw/1000,pr.steel)});
+ $('#s-reb').innerHTML=kv([...sr,['الإجمالي شامل الهالك',`${fmt(st)} كجم = ${fmt(st/1000,3)} طن`]]);
+ // مباني
+ const gr0=T.wall.area,op=T.open.area,na=Math.max(0,gr0-op),ra=gr0?na/gr0:0,bl=na*12.5*(1+P.wBlk/100),mo=ra*C.wall.reduce((s,c,i)=>s+c.area*(MF[S.tb.wall[i].th]||0),0);
+ $('#s-wall').innerHTML=kv([['إجمالي مساحة الجدران م²',fmt(gr0)],['خصم الفتحات م²',fmt(op)],['صافي المساحة م²',fmt(na)],['عدد البلوكات (12.5/م² + هالك)',fmt(bl,0)],['المونة م³',fmt(mo,3)],['أسمنت المونة (6 كيس/م³)',Math.ceil(mo*6)+' كيس'],['رمل المونة م³',fmt(mo*1.1,3)]]);
+ add('بناء جدران بلك (توريد وتركيب)','قطعة',bl,pr.blk/1000);add('أسمنت مونة البناء','كيس',Math.ceil(mo*6),pr.cement);add('رمل مونة البناء','م³',mo*1.1,pr.sand);
+ // تشطيبات
+ const F={};C.fin.forEach((c,i)=>{const t=S.tb.fin[i].type;F[t]=(F[t]||[0,c.u]);F[t][0]+=c.qty});
+ $('#s-fin').innerHTML=kv(Object.keys(F).map(t=>[t,`${fmt(F[t][0])} ${F[t][1]}`]));
+ FT.forEach(t=>{if(F[t])add(t,F[t][1],F[t][0],pr[FK[t]])});
+ 
+ const tot=B.reduce((s,r)=>s+r[5],0);LASTC={C,B,tot,vol:T.con.vol,st,ex};
+}
+function renderMaster(){const cur=S.par.cur,c=LASTC,gt=c.tot,ar=+S.meta.area||0,f2=v=>fmt(v),fq=v=>fmt(v,Number.isInteger(v)?0:2);let n=0;
+ const sc=t=>`<tr class="sec"><td colspan="6">${t}</td></tr>`,row=r=>`<tr><td>${++n}</td><td style="text-align:right">${esc(r[0])}</td><td>${r[1]}</td><td>${fq(r[2])}</td><td>${f2(r[3])}</td><td class="c">${f2(r[4])}</td></tr>`,sub=(t,v)=>`<tr class="sub"><td colspan="5">${t}</td><td>${f2(v)}</td></tr>`;
+ $('#boq').innerHTML=`<thead><tr><th>رقم البند</th><th>بيان الأعمال</th><th>الوحدة</th><th>الكمية</th><th>سعر الوحدة (${cur})</th><th>الإجمالي (${cur})</th></tr></thead><tbody>${sc('الأعمال المدنية')}${c.B.map(r=>row([r[1],r[2],r[3],r[4],r[5]])).join('')}${sub('إجمالي الأعمال المدنية',c.tot)}</tbody><tfoot><tr><td colspan="5">المجموع الكلي للمشروع (${cur})</td><td>${f2(gt)}</td></tr></tfoot>`;
+ LASTK=[['إجمالي الخرسانة م³',rd(c.vol)],['إجمالي الحديد (طن)',rd(c.st/1000)],['الأعمال المدنية ('+cur+')',rd(c.tot)],['التكلفة / م² ('+cur+')',ar?rd(gt/ar):'—'],['التكلفة الكلية ('+cur+')',rd(gt)]];
+ $('#kpi').innerHTML=LASTK.map((k,i)=>`<div class="k ${i>2?'t':''}"><span>${k[0]}</span><b>${typeof k[1]=='number'?fmt(k[1],Number.isInteger(k[1])?0:2):k[1]}</b></div>`).join('')}
+function calc(){const{C,T}=calcTables();calcC(C,T);renderMaster()}
+const dom=id=>$$('#'+id+' tr').map(tr=>[...tr.children].map(td=>td.textContent));
+function model(){const m=S.meta,cur=S.par.cur,c=LASTC,M=[],mk=(t,h,rows,f)=>M.push({title:t,head:['#',...h],rows:rows.map((r,i)=>[i+1,...r]),foot:f?['',...f]:null});
+ mk('المنظومة الهندسية لحساب الكميات والمواصفات (BOQ Pro)',['المشروع','المالك','التاريخ','مساحة البناء م²','طول المبنى م','عرض المبنى م','ارتفاع المبنى م'],[[m.proj||'—',m.owner||'—',m.date,+m.area||0,+m.bL||0,+m.bW||0,+m.bH||0]]);
+ mk('ملخص المشروع',['المؤشر','القيمة'],LASTK);
+ mk('جدول الكميات — الأعمال المدنية',['بيان الأعمال','الوحدة','الكمية','سعر الوحدة ('+cur+')','الإجمالي ('+cur+')'],c.B.map(r=>[r[1],r[2],rd(r[3]),rd(r[4]),rd(r[5])]),['','','',`إجمالي الأعمال المدنية (${cur})`,rd(c.tot)]);
+ mk('الإجمالي العام',['البيان','المبلغ ('+cur+')'],[['الأعمال المدنية',rd(c.tot)],['المجموع الكلي',rd(c.tot)]]);
+ ['exc','con','reb','wall','open','fin'].forEach(t=>{const T=TB[t];mk(T.t,[...T.cols.map(q=>q[1]),...T.out.map(o=>o[1])],S.tb[t].map((r,i)=>[...T.cols.map(q=>q[0]=='grade'?gl(r.grade):r[q[0]]),...T.out.map(o=>{const v=c.C[t][i][o[0]];return typeof v=='number'?Math.round(v*1000)/1000:v})]));
+  const sm={exc:'s-exc',con:'s-con',reb:'s-reb',wall:'s-wall',fin:'s-fin'}[t];if(sm)mk('ملخص: '+T.t,['البيان','القيمة'],dom(sm))});
+
+ return M;
+}
+function report(M){const H='background:#1e3a5f;color:#ffffff;font-weight:bold;border:1px solid #000;padding:5px;text-align:center',D='border:1px solid #000;padding:4px;text-align:center',F='background:#d9e2f3;font-weight:bold;border:1px solid #000;padding:5px;text-align:center',TT='font-size:14pt;font-weight:bold;background:#0b4f6c;color:#ffffff;padding:8px;text-align:center;border:1px solid #000',v=x=>typeof x=='number'?fmt(x,Number.isInteger(x)?0:2):esc(x);
+ return M.map(t=>`<table dir="rtl" style="border-collapse:collapse;width:100%"><thead><tr><td colspan="${t.head.length}" style="${TT}">${t.title}</td></tr><tr>${t.head.map(h=>`<th style="${H}">${h}</th>`).join('')}</tr></thead><tbody>${t.rows.map(r=>`<tr>${r.map(c=>`<td style="${D}">${v(c)}</td>`).join('')}</tr>`).join('')}${t.foot?`<tr>${t.foot.map(c=>`<td style="${F}">${v(c)}</td>`).join('')}</tr>`:''}<tr><td colspan="${t.head.length}" style="border:none;height:14px">&nbsp;</td></tr></tbody></table>`).join('')+'<div style="text-align:center;font-weight:bold;padding:8px">تصميم وبرمجة: م/عبدالرحمن عامر &nbsp;|&nbsp; للتواصل والاستشارات الهندسية والبرمجية: +967777136380</div>'}
+
+function bindMeta(){$$('[data-g=meta]').forEach(i=>i.value=S.meta[i.dataset.k]??'')}
+function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>e.classList.remove('on'),2600)}
+function dl(blob,name){
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download=name;a.style.display='none';document.body.appendChild(a);
+ try{a.click();toast('بدأ تنزيل ملف Excel. تحقق من مجلد التنزيلات ✓')}
+ catch(err){toast('تعذر بدء التنزيل. استخدم رابط التنزيل الظاهر أسفل الصفحة')}
+ a.remove();
+ const old=document.getElementById('downloadFallback');if(old)old.remove();
+ const fallback=document.createElement('a');fallback.id='downloadFallback';fallback.href=url;fallback.download=name;
+ fallback.textContent='اضغط هنا لتنزيل ملف Excel';
+ fallback.style.cssText='position:fixed;z-index:1000;bottom:64px;left:50%;transform:translateX(-50%);background:#0e7490;color:#fff;padding:12px 18px;border-radius:10px;font-weight:bold;text-decoration:none;box-shadow:0 4px 18px #0008';
+ document.body.appendChild(fallback);
+ setTimeout(()=>{URL.revokeObjectURL(url);if(fallback.isConnected)fallback.remove()},60000);
+}
+document.addEventListener('input',e=>{const d=e.target.dataset;if(!d)return;if(d.px!==undefined){S.px[d.px]=parseFloat(e.target.value)||0;calc();return}if(d.mx!==undefined){S.mix[d.mx][d.i]=parseFloat(e.target.value)||0;calc();return}if(!d.k)return;let v=e.target.value;if(d.ty=='n'||d.ty=='sn')v=parseFloat(v)||0;if(d.g)S[d.g][d.k]=v;else if(d.t)S.tb[d.t][d.i][d.k]=v;if(d.k=='theme')applyTheme();if(d.k=='cu'){build();bindMeta();return}calc()});
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+ if(d.tab){$$('nav button').forEach(x=>x.classList.toggle('on',x===b));$$('.panel').forEach(p=>p.classList.toggle('on',p.id=='p-'+d.tab));window.scrollTo({top:0,behavior:'smooth'})}
+ if(d.a&&d.t){const a=S.tb[d.t];if(d.a=='add')a.push({...TB[d.t].d});if(d.a=='cp')a.splice(+d.i+1,0,{...a[d.i]});if(d.a=='rm'){if(a.length<2&&!confirm('هذا آخر صف، هل تريد حذفه؟'))return;a.splice(d.i,1)}renderT(d.t)}});
+$('#bSave').onclick=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));toast('تم حفظ المشروع في المتصفح ✓')}catch(x){toast('تعذر الحفظ في المتصفح')}};
+$('#bNew').onclick=()=>{if(confirm('سيتم تصفير جميع البيانات. هل أنت متأكد؟')){const th=S.par.theme,cu=S.par.cu;S=mkDef();S.par.theme=th;S.par.cu=cu;build();bindMeta();toast('تم إنشاء مشروع جديد')}};
+$('#bResetAll').onclick=()=>{
+ if(!confirm('تحذير: سيتم حذف بيانات المشروع الحالية والبيانات المحفوظة في هذا المتصفح، وإرجاع جميع الإعدادات والأسعار والجداول إلى القيم الافتراضية. لا يمكن التراجع عن هذه العملية. هل تريد المتابعة؟'))return;
+ try{
+  localStorage.removeItem(KEY);
+  localStorage.removeItem('boqpro_v1');
+ }catch(err){console.warn('تعذر حذف التخزين المحلي:',err)}
+ S=mkDef();
+ LASTC={};LASTK=[];
+ applyTheme();
+ build();
+ bindMeta();
+ $('#rep').innerHTML='';
+ toast('تم تصفير جميع البيانات والإعدادات بنجاح ✓');
+};
+$('#bPrint').onclick=()=>{
+ try{const html=report(model());if(!html)throw new Error('لم يتم إنشاء محتوى التقرير');$('#rep').innerHTML=html;toast('اختر طباعة أو حفظ بصيغة PDF من نافذة الطباعة');window.print()}
+ catch(err){console.error('Print error:',err);toast('تعذر تجهيز التقرير للطباعة: '+(err.message||err))}
+};
+$('#bXls').onclick=()=>{
+ try{const data=model();if(!Array.isArray(data)||!data.length)throw new Error('لا توجد بيانات للتصدير');const blob=buildXlsx(data);if(!blob||!blob.size)throw new Error('تعذر إنشاء ملف Excel');const safeName=(S.meta.proj||'BOQ-Full').replace(/[\\/:*?"<>|]/g,'-');dl(blob,safeName+'.xlsx')}
+ catch(err){console.error('Excel export error:',err);toast('تعذر تصدير Excel: '+(err.message||err))}
+};
+try{const s=localStorage.getItem(KEY)||localStorage.getItem('boqpro_v1');if(s){const o=JSON.parse(s),d=mkDef();if(o.tb&&(o.par||o.pr)){S={meta:{...d.meta,...o.meta},mix:{...d.mix,...(o.mix||{})},pr:{...d.pr,...(o.pr||{})},px:o.px||{},par:{...d.par,...(o.par||{})},tb:{...d.tb,...o.tb}};S.tb.con.forEach(r=>{r.grade=({C15:'17',C20:'21',C25:'25',C30:'30'})[r.grade]||r.grade})}}}catch(x){}
+applyTheme();build();bindMeta();
+
+// ---------- مساعد الذكاء الاصطناعي: تحليل المخطط ----------
+const AI_ENDPOINT='/api/analyze'; // دالة خادم (Vercel) تحمل المفتاح. المفتاح لا يوضع هنا أبدا.
+const AI_SCHEMA='{"meta":{"proj":"","owner":"","area":0,"bL":0,"bW":0,"bH":0},"exc":[{"name":"","L":0,"W":0,"D":0,"N":1}],"con":[{"name":"","type":"قاعدة|لبشة/شداد|رقبة عمود|خرسانة عادية|عمود|جدار قص|كمرة|سقف مصمت|فلات سلاب|سقف هوردي","grade":"17|21|25|28|30|35","L":0,"W":0,"H":0,"N":1}],"reb":[{"el":"","dia":"8|10|12|14|16|18|20|25|32","len":0,"n":0,"cnt":1}],"wall":[{"name":"","L":0,"H":0,"th":"10|15|20","N":1}],"open":[{"name":"","W":0,"H":0,"N":1}],"fin":[{"name":"","type":"'+FT.join('|')+'","L":0,"W":0,"N":1,"ded":0}],"notes":""}';
+const AI_PROMPT='حلل المخطط المرفق (معماري/إنشائي) واستخرج اسم المشروع وأبعاد المبنى (bL الطول وbW العرض وbH الارتفاع الكلي للمبنى بالمتر) وبيانات الحصر. أعد JSON فقط بدون أي شرح وبهذا الشكل بالضبط (الأبعاد بالمتر عدا السمك بالسم، والمساحة بالمتر المربع). ضع في notes أي افتراض أو بند غير واضح. لا تخترع قيما غير موجودة: إن لم تظهر في المخطط اتركها فارغة أو صفرا.\n'+AI_SCHEMA;
+let AIF=null,AIP=null;
+const aiSay=(who,t)=>{const c=$('#aiChat');if(!c)return;const d=document.createElement('div');d.style.cssText='margin:8px 0;padding:10px 12px;border-radius:12px;max-width:92%;white-space:pre-wrap;'+(who=='u'?'background:#0e749033;margin-right:0;margin-left:auto':'background:#5b21b633');d.textContent=t;c.appendChild(d);c.scrollTop=c.scrollHeight};
+const aiNum=v=>{v=parseFloat(String(v).replace(/,/g,''));return isFinite(v)&&v>=0?v:0};
+const aiPick=(v,list,def)=>list.map(String).includes(String(v))?(typeof list[0]=='number'?+v:String(v)):def;
+function aiClean(o){
+ const arr=k=>Array.isArray(o[k])?o[k]:[],R={meta:{},tb:{}},m=o.meta||{};
+ if(m.proj)R.meta.proj=String(m.proj).slice(0,120);if(m.owner)R.meta.owner=String(m.owner).slice(0,120);['bL','bW','bH'].forEach(k=>{if(aiNum(m[k]))R.meta[k]=aiNum(m[k])});if(aiNum(m.area))R.meta.area=aiNum(m.area);else if(R.meta.bL&&R.meta.bW)R.meta.area=Math.round(R.meta.bL*R.meta.bW*100)/100;
+ R.tb.exc=arr('exc').map(r=>({name:String(r.name||'ح'),L:aiNum(r.L),W:aiNum(r.W),D:aiNum(r.D),N:aiNum(r.N)||1}));
+ R.tb.con=arr('con').map(r=>({name:String(r.name||''),type:aiPick(r.type,CT,'قاعدة'),grade:aiPick(r.grade,GR,'25'),L:aiNum(r.L),W:aiNum(r.W),H:aiNum(r.H),N:aiNum(r.N)||1}));
+ R.tb.reb=arr('reb').map(r=>({el:String(r.el||''),dia:aiPick(r.dia,[8,10,12,14,16,18,20,25,32],12),len:aiNum(r.len),n:aiNum(r.n),cnt:aiNum(r.cnt)||1}));
+ R.tb.wall=arr('wall').map(r=>({name:String(r.name||''),L:aiNum(r.L),H:aiNum(r.H),th:aiPick(r.th,[10,15,20],20),N:aiNum(r.N)||1}));
+ R.tb.open=arr('open').map(r=>({name:String(r.name||''),W:aiNum(r.W),H:aiNum(r.H),N:aiNum(r.N)||1}));
+ R.tb.fin=arr('fin').map(r=>({name:String(r.name||''),type:aiPick(r.type,FT,'لياسة داخلية'),L:aiNum(r.L),W:aiNum(r.W),N:aiNum(r.N)||1,ded:aiNum(r.ded)}));
+ R.notes=String(o.notes||'').slice(0,1500);return R}
+function aiParse(t){const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<a)throw new Error('لم أجد بيانات JSON في الرد');return JSON.parse(t.slice(a,b+1))}
+const AIN={exc:'الحفر',con:'الخرسانة',reb:'الحديد',wall:'الجدران',open:'الفتحات',fin:'التشطيبات'};
+function aiPreview(raw){
+ try{const o=typeof raw=='string'?aiParse(raw):raw;AIP=aiClean(o);
+  const parts=Object.keys(AIN).filter(k=>AIP.tb[k].length).map(k=>`${AIN[k]}: ${AIP.tb[k].length} صف`);
+  if(!parts.length&&!Object.keys(AIP.meta).length)throw new Error('لا توجد بنود قابلة للتطبيق');
+  $('#aiPrev').innerHTML=`<div class="card" style="margin-top:12px"><h2>معاينة قبل التطبيق</h2><p>${esc(parts.join(' | ')||'بيانات المشروع فقط')}${Object.keys(AIP.meta).length?' | بيانات المشروع':''}</p>${Object.keys(AIP.meta).length?`<p>${esc(Object.entries(AIP.meta).map(([k,v])=>({proj:'المشروع',owner:'المالك',area:'المساحة م²',bL:'الطول م',bW:'العرض م',bH:'الارتفاع م'}[k]+': '+v)).join(' | '))}</p>`:''}${AIP.notes?`<p style="color:var(--go)">ملاحظات الذكاء الاصطناعي: ${esc(AIP.notes)}</p>`:''}<p style="color:var(--mu);font-size:13px">التطبيق يستبدل الجداول المذكورة فقط ويبقي الباقي. راجع الأرقام بعد التطبيق، فهي تقدير من المخطط.</p><button type="button" class="btn p" data-ai="apply">تطبيق على الجداول</button></div>`;
+  return true}catch(e){AIP=null;$('#aiPrev').innerHTML='';aiSay('a','تعذر قراءة البيانات: '+e.message);return false}}
+function aiApply(){if(!AIP)return;Object.assign(S.meta,AIP.meta);
+ Object.keys(AIN).forEach(k=>{if(AIP.tb[k].length)S.tb[k]=AIP.tb[k]});
+ Object.keys(AIN).forEach(renderT);bindMeta();calc();$('#aiPrev').innerHTML='';AIP=null;
+ aiSay('a','تم تطبيق البيانات على الجداول. راجع تبويبات الحفر والخرسانة والحديد والمباني والتشطيبات ثم الجدول النهائي، وأدخل الأسعار.');toast('تم تطبيق بيانات المخطط ✓')}
+function aiFile(f){AIF=null;$('#aiFn').textContent='';if(!f)return;
+ if(f.type=='application/pdf'){if(f.size>4e6){aiSay('a','ملف PDF أكبر من 4 ميجا. صغّره أو ارفع صورة للمخطط.');return}
+  const r=new FileReader();r.onload=()=>{AIF={mime:f.type,data:String(r.result).split(',')[1]};$('#aiFn').textContent='📄 '+f.name};r.readAsDataURL(f)}
+ else if(f.type.startsWith('image/')){const img=new Image,u=URL.createObjectURL(f);img.onload=()=>{const k=Math.min(1,1800/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);AIF={mime:'image/jpeg',data:c.toDataURL('image/jpeg',.85).split(',')[1]};$('#aiFn').textContent='🖼 '+f.name;URL.revokeObjectURL(u)};img.onerror=()=>aiSay('a','تعذر قراءة الصورة');img.src=u}
+ else aiSay('a','الصيغ المدعومة: صورة أو PDF')}
+async function aiSend(){const msg=$('#aiMsg').value.trim();if(!AIF&&!msg){aiSay('a','ارفع مخطط أو اكتب رسالة.');return}
+ aiSay('u',(AIF?$('#aiFn').textContent+'\n':'')+(msg||'حلل المخطط'));$('#aiMsg').value='';const btn=$('[data-ai=send]');btn.disabled=true;aiSay('a','جاري التحليل...');
+ try{const r=await fetch(AI_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,file:AIF,prompt:AI_PROMPT})});
+  if(!r.ok)throw new Error(r.status==404?'NOSERVER':'HTTP '+r.status);const j=await r.json();
+  if(j.reply)aiSay('a',j.reply);if(j.data)aiPreview(j.data);}
+ catch(e){aiSay('a',e.message=='NOSERVER'||e instanceof TypeError?'خدمة التحليل غير مفعّلة بعد على هذا الموقع (تحتاج دالة خادم ومفتاح ذكاء اصطناعي). استخدم الوضع اليدوي أدناه: انسخ التعليمات، أعطها مع المخطط لأي ذكاء اصطناعي، والصق الرد هنا.':'تعذر التحليل: '+e.message)}
+ btn.disabled=false}
+document.addEventListener('change',e=>{if(e.target.id=='aiFile')aiFile(e.target.files[0])});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-ai]');if(!b)return;const a=b.dataset.ai;
+ if(a=='send')aiSend();if(a=='apply')aiApply();
+ if(a=='copy'){navigator.clipboard&&navigator.clipboard.writeText(AI_PROMPT).then(()=>toast('تم نسخ التعليمات ✓'),()=>toast('تعذر النسخ'))}
+ if(a=='prev'){const t=$('#aiJson').value.trim();if(t)aiPreview(t)}});
+aiSay('a','مرحبا. ارفع مخطط (صورة أو PDF) وأحلله وأعبي بيانات المشروع تلقائيا: الحفر والخرسانة والحديد والمباني والتشطيبات. بعدها تراجع وتطبق.');
+
+const xe=s=>String(s).replace(/&quot;/g,'"').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const colL=i=>String.fromCharCode(65+i);
+function zip(files){
+ const te=new TextEncoder(),T=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;T[n]=c>>>0}
+ const crc=b=>{let c=-1;for(let i=0;i<b.length;i++)c=T[(c^b[i])&255]^(c>>>8);return(c^-1)>>>0};
+ const parts=[],cd=[];let off=0;
+ files.forEach(([name,str])=>{const nb=te.encode(name),d=te.encode(str),cr=crc(d);
+  const h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0,true);h.setUint16(8,0,true);h.setUint16(10,0,true);h.setUint16(12,0x5821,true);h.setUint32(14,cr,true);h.setUint32(18,d.length,true);h.setUint32(22,d.length,true);h.setUint16(26,nb.length,true);h.setUint16(28,0,true);
+  parts.push(new Uint8Array(h.buffer),nb,d);
+  const c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0,true);c.setUint16(10,0,true);c.setUint16(12,0,true);c.setUint16(14,0x5821,true);c.setUint32(16,cr,true);c.setUint32(20,d.length,true);c.setUint32(24,d.length,true);c.setUint16(28,nb.length,true);c.setUint32(42,off,true);
+  cd.push(new Uint8Array(c.buffer),nb);off+=30+nb.length+d.length});
+ const cs=cd.reduce((a,b)=>a+b.length,0),e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);
+ return new Blob([...parts,...cd,new Uint8Array(e.buffer)],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+}
+function buildXlsx(TM){
+ let rows='',mg=[],r=0;
+ const cell=(c,v,k)=>{if(typeof v=='string'&&v!==''&&/^-?[\d,]*\.?\d+$/.test(v)&&!/^0\d/.test(v))v=Number(v.replace(/,/g,''));
+  const n=typeof v=='number'&&isFinite(v),f=n&&!Number.isInteger(v),s=k=='t'?1:k=='h'?2:k=='b'?(n?(f?4:8):3):(n?(f?6:9):5),ref=colL(c)+r;
+  return n?`<c r="${ref}" s="${s}"><v>${v}</v></c>`:(v===''||v==null)?`<c r="${ref}" s="${s}"/>`:`<c r="${ref}" s="${s}" t="inlineStr"><is><t xml:space="preserve">${xe(v)}</t></is></c>`};
+ const row=(a,k,h)=>{r++;rows+=`<row r="${r}"${h?` ht="${h}" customHeight="1"`:''}>${a.map((v,c)=>cell(c,v,k)).join('')}</row>`};
+ TM.forEach(t=>{const w=t.head.length;row([t.title,...Array(w-1).fill('')],'t',26);if(w>1)mg.push(`A${r}:${colL(w-1)}${r}`);row(t.head,'h',22);t.rows.forEach(a=>row(a,'b'));if(t.foot)row(t.foot,'f');r++});
+ row(['تصميم وبرمجة: م/عبدالرحمن عامر  |  للتواصل والاستشارات الهندسية والبرمجية: +967777136380','','','','',''],'f',24);mg.push(`A${r}:F${r}`);
+ const cols=[8,34,...Array(16).fill(14)].map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('');
+ const X='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',NS='http://schemas.openxmlformats.org/spreadsheetml/2006/main';
+ const xf=(nf,fo,fi,b,al)=>`<xf numFmtId="${nf}" fontId="${fo}" fillId="${fi}" borderId="${b}" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>`;
+ const st=`${X}<styleSheet xmlns="${NS}"><fonts count="3"><font><sz val="11"/><name val="Arial"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Arial"/></font><font><b/><sz val="11"/><name val="Arial"/></font></fonts><fills count="5"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF0B4F6C"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1E3A5F"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFD9E2F3"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FF000000"/></left><right style="thin"><color rgb="FF000000"/></right><top style="thin"><color rgb="FF000000"/></top><bottom style="thin"><color rgb="FF000000"/></bottom><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="10"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>${xf(0,1,2,1)}${xf(0,1,3,1)}${xf(0,0,0,1)}${xf(4,0,0,1)}${xf(0,2,4,1)}${xf(4,2,4,1)}<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>${xf(0,0,0,1)}${xf(0,2,4,1)}</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+ const sh=`${X}<worksheet xmlns="${NS}"><sheetPr><pageSetUpPr fitToPage="1"/></sheetPr><sheetViews><sheetView rightToLeft="1" workbookViewId="0"/></sheetViews><sheetFormatPr defaultRowHeight="18"/><cols>${cols}</cols><sheetData>${rows}</sheetData><mergeCells count="${mg.length}">${mg.map(m=>`<mergeCell ref="${m}"/>`).join('')}</mergeCells><pageMargins left="0.4" right="0.4" top="0.5" bottom="0.5" header="0.3" footer="0.3"/><pageSetup orientation="landscape" fitToWidth="1" fitToHeight="0"/></worksheet>`;
+ const R='http://schemas.openxmlformats.org/officeDocument/2006/relationships',PR_='http://schemas.openxmlformats.org/package/2006/relationships';
+ return zip([
+  ['[Content_Types].xml',`${X}<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`],
+  ['_rels/.rels',`${X}<Relationships xmlns="${PR_}"><Relationship Id="rId1" Type="${R}/officeDocument" Target="xl/workbook.xml"/></Relationships>`],
+  ['xl/workbook.xml',`${X}<workbook xmlns="${NS}" xmlns:r="${R}"><sheets><sheet name="BOQ" sheetId="1" r:id="rId1"/></sheets></workbook>`],
+  ['xl/_rels/workbook.xml.rels',`${X}<Relationships xmlns="${PR_}"><Relationship Id="rId1" Type="${R}/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="${R}/styles" Target="styles.xml"/></Relationships>`],
+  ['xl/styles.xml',st],['xl/worksheets/sheet1.xml',sh]]);
+}
+
+</script>
+</body>
+</html>
+
