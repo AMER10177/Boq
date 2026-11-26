@@ -119,6 +119,9 @@ tr.sub td{background:#101b42;font-weight:900;color:var(--ok);padding:8px}
     <input data-g="meta" data-k="owner" placeholder="اسم المالك">
     <input data-g="meta" data-k="date" type="date" title="تاريخ الحصر">
     <input data-g="meta" data-k="area" data-ty="n" type="number" placeholder="مساحة البناء م²" title="مساحة البناء الإجمالية م²">
+    <input data-g="meta" data-k="bL" data-ty="n" type="number" placeholder="طول المبنى م">
+    <input data-g="meta" data-k="bW" data-ty="n" type="number" placeholder="عرض المبنى م">
+    <input data-g="meta" data-k="bH" data-ty="n" type="number" placeholder="ارتفاع المبنى م">
    </div>
   </div>
   <div class="row" style="gap:7px">
@@ -151,7 +154,7 @@ const PR=[['steel','سعر طن الحديد','طن',2800],['ready','سعر م³
 const PA=[['wSteel','نسبة هالك الحديد %',5],['wCon','نسبة هالك الخرسانة %',3],['wBlk','نسبة هالك البلك %',5],['swell','معامل الانتفاش',1.25],['comp','معامل الدمك (حجم الردم المفكوك)',1.15],['hRatio','نسبة الخرسانة الصافية في الهوردي',0.6],['hBlk','عدد بلوكات الهوردي / م²',9.6]];
 const GR=[17,21,25,28,30,35],MIX0={17:[6,.45,.9],21:[6.5,.45,.9],25:[7,.45,.9],28:[7.5,.43,.86],30:[8,.42,.84],35:[9,.42,.84]};
 const gl=g=>{const u=(typeof S!=='undefined'&&S.par&&S.par.cu)||'MPa';return u=='kg/cm²'?Math.round(g*10.197)+' kg/cm²':u=='psi'?Math.round(g*145.04)+' psi':g+' MPa'};
-const mkDefC=()=>({meta:{proj:'',owner:'',date:new Date().toISOString().slice(0,10),area:200},
+const mkDefC=()=>({meta:{proj:'',owner:'',date:new Date().toISOString().slice(0,10),area:200,bL:'',bW:'',bH:''},
  mix:JSON.parse(JSON.stringify(MIX0)),
  par:Object.assign({cur:'ريال',mix:'site',theme:'dark',cu:'MPa'},Object.fromEntries(PA.map(a=>[a[0],a[2]]))),
  pr:Object.fromEntries(PR.map(a=>[a[0],a[3]])),
@@ -159,23 +162,6 @@ const mkDefC=()=>({meta:{proj:'',owner:'',date:new Date().toISOString().slice(0,
  reb:[{el:'ق1',dia:16,len:12,n:20,cnt:10},{el:'ع1',dia:16,len:3.5,n:8,cnt:10},{el:'أساور',dia:8,len:1.2,n:25,cnt:10}],
  wall:[{name:'خارجي',L:40,H:3,th:20,N:1},{name:'داخلي',L:30,H:3,th:10,N:1}],open:[{name:'باب',W:.9,H:2.1,N:6},{name:'شباك',W:1.2,H:1.2,N:8}],
  fin:[{name:'صالة',type:'سيراميك أرضيات',L:6,W:5,N:1,ded:0},{name:'جدران',type:'دهان',L:70,W:3,N:1,ded:15}]}});
-const SZW=[1.5,2.5,4,6,8,10,12],SZP=['1/2','3/4','1','1.5','2','4'],BOXS=['10×10','10×15','15×20','20×30','25×50'],DROPS=[20,30,40,50,60],PNL=['4/6','5/7','6/8','7/9','8/10','9/11','10/12','12/14','14/16','16/18'],BRK=[6,10,16,20,25,32,63],BRKR=[6,10,16,20,25,32,40,50,63,80,100,125],WATT=[3,5,7,9,12,15,20,25,30,35,40,50,60,70,100],CAP={1.5:15,2.5:21,4:28,6:36,8:44,10:50,12:58},GANG=['مفردة','ثنائية','ثلاثية','رباعية','خماسية'],BT=['مفرد','مزدوج','ثلاثية'],PT=['حنجورية','ملساء مرنة','قائم'];
-const SET=[['cur','العملة','s','ريال',['ريال','دولار','جنيه','درهم','دينار']],['H','ارتفاع الغرفة الصافي م','n',3],['swH','ارتفاع المفتاح م','n',1.2],['soH','ارتفاع المأخذ م','n',0.3],['acH','ارتفاع المكيف م','n',2.2],['wP','هالك المواسير %','n',5],['wW','هالك الأسلاك %','n',10],['bx','زيادة سلك لكل علبة م','n',0.4],['perL','نقاط إضاءة / دائرة','n',10],['perS','مآخذ / دائرة','n',8],['spare','احتياطي القواطع %','n',20],
-['pT','نوع ماسورة السقف','s','حنجورية',PT],['pS','حجم ماسورة السقف (إنش)','s','3/4',SZP],['pT2','نوع ماسورة الجدران','s','ملساء مرنة',PT],['pS2','حجم ماسورة الجدران (إنش)','s','3/4',SZP],
-['bm','خامة العلب','s','بلاستيكية',['بلاستيكية','حديدية']],['bsw','علبة المفاتيح','s','مفرد',BT],['bso','علبة المآخذ','s','مفرد',BT],['ph','نظام الطبلون','s','سنجل فاز',['سنجل فاز','3 فاز']],['pn','سعة الطبلون','s','8/10',PNL],
-['wt','نوع السلك','s','حراري',['حراري','فليكس مزدوج']],['wb','رول الحراري','s','الفنار 550ft',['الفنار 550ft','بحره 220ft']],['szL','مقطع سلك الإضاءة مم²','sn',1.5,SZW],['szS','مقطع سلك المآخذ مم²','sn',2.5,SZW],['szAC','مقطع سلك المكيف مم²','sn',4,SZW],['szHW','مقطع سلك السخان مم²','sn',6,SZW],
-['tel','سلك التلفون (خط)','sn',4,[2,4]],['ic','سلك الانترفون (خط)','sn',6,[6,8,12]],['nc','سلك النت (خط)','sn',8,[6,8,12,16]],
-['way','نوع المفتاح','s','one way',['one way','two way']],['gang','صنف المفتاح','s','مفردة',GANG],['soT','نوع المأخذ','s','م+مزدوج',['عادي','م+مزدوج','م+USB']],['hwA','مأخذ السخان (أمبير)','sn',20,[16,20,25]],
-['base','ابية اللمبات','s','حلزوني',['حلزوني','مسمار','كلاهما']],['lampV','فولت اللمبة','sn',220,[220,12]],['lampW','قدرة اللمبة (وات)','sn',9,WATT],['scT','نوع المسامير','s','حلزوني',['حلزوني','يمنتيكس','ملساء']],['scS','مقاس المسامير مم','sn',30,[10,15,20,25,30,35,40,45,50,60,70]],
-['bt','نوع القواطع','s','AC',['AC','DC']],['bp','تصنيف القواطع الفرعية','s','مفرد',['مفرد','رئيسي خطين','3 فاز']],['brL','قاطع الإضاءة A','sn',10,BRK],['brS','قاطع المآخذ A','sn',20,BRK],['brAc','قاطع المكيف A','sn',20,BRK],['brHw','قاطع السخان A','sn',25,BRK],['brMain','القاطع الرئيسي A','sn',32,BRK],
-['socW','حمل المأخذ (وات)','n',180],['acW','حمل المكيف (وات)','n',1800],['hwW','حمل السخان (وات)','n',3000],['dem','معامل الطلب','n',0.7]];
-const ST={1:'التأسيس الأولي',2:'السحب والتجميع',3:'التطبيق النهائي والتشغيل',4:'مواد إضافية لكل المراحل'};
-const CAT={1:['علبة حديدية مفرد|قطعة','علبة حديدية مزدوج|قطعة','علبة حديدية ثلاثية|قطعة','علبة بلاستيكية مفرد|قطعة','علبة بلاستيكية مزدوج|قطعة','علبة بلاستيكية ثلاثية|قطعة','قسامة 10×10|قطعة','قسامة 10×15|قطعة','قسامة 15×20|قطعة','قسامة 20×30|قطعة','قسامة 25×50|قطعة','ماسورة حنجورية|م','ماسورة ملساء مرنة|م','ماسورة قائم|م','كوع / وصلة|قطعة','طبلون سنجل فاز|قطعة','طبلون 3 فاز|قطعة','صندوق لوحة فرعية|قطعة','لوحة تحكم|قطعة'],
-2:['سلك نحاس حراري|رول','سلك فليكس مزدوج|م','سلك تلفون|م','سلك تلفزيون|م','سلك سماعة انترفون|م','سلك نت|م','شريط لاصق|رول'],
-3:['مفتاح|قطعة','مفتاح جرس|قطعة','مأخذ كهرباء|قطعة','مأخذ تلفون|قطعة','مأخذ نت|قطعة','مأخذ تلفزيون|قطعة','مأخذ تلفون + تلفزيون|قطعة','مأخذ سخان|قطعة','قاطع حماية كهرومغناطيسي|قطعة','ابية لمبات|قطعة','لمبة|قطعة','فيوز حماية يدوي|قطعة','فيوز حماية توماتيك|قطعة','سكين فصل يدوي|قطعة','سكين فصل توماتيك|قطعة','مسامير|قطعة','جرس|قطعة','سماعة انترفون|قطعة','سماعة انتركوم|قطعة','شريط إضاءة|م','ثريا|قطعة','نجف|قطعة','لمبة ليد|قطعة','فانوس جداري|قطعة','لمبة حساسة|قطعة'],
-4:['كركتر وكنشات وبوصات التوصيل|قطعة','لاصق PVC|علبة','سلك سحب|رول','مشابك تثبيت|قطعة','جبس / مونة تثبيت|كيس','أغطية علب مؤقتة|قطعة','قضيب تأريض|قطعة','كابل نحاس عاري للتأريض|م','حماية من الصواعق SPD|قطعة','قاطع تسرب أرضي RCCB|قطعة','عداد وتغذية رئيسية|قطعة','مروحة شفط|قطعة','أجور عمالة|يوم','أخرى|قطعة']};
-const NM=n=>CAT[n].map(x=>x.split('|')[0]),UN=(n,k)=>{const e=CAT[n].find(x=>x.startsWith(k+'|'));return e?e.split('|')[1]:''};
-const mkDefE=()=>({meta:{proj:'',owner:'',date:new Date().toISOString().slice(0,10),area:200},par:Object.fromEntries(SET.map(a=>[a[0],a[3]])),px:{},tb:{rm:[{name:'غرفة نوم',L:4,W:4,dist:6,drop:30,box:'15×20',nl:4,nsw:2,ns:6,nac:1,nhw:0,ntv:1,ntel:0,nnet:1,nint:0},{name:'حمام',L:2,W:2,dist:4,drop:30,box:'10×15',nl:2,nsw:1,ns:1,nac:0,nhw:1,ntv:0,ntel:0,nnet:0,nint:0}],x1:[],x2:[],x3:[],x4:[]}});
 const CT=['قاعدة','لبشة/شداد','رقبة عمود','خرسانة عادية','عمود','جدار قص','كمرة','سقف مصمت','فلات سلاب','سقف هوردي'],BUR=['قاعدة','لبشة/شداد','رقبة عمود','خرسانة عادية'];
 const MF={10:.012,15:.018,20:.024};
 const FT=['لياسة داخلية','لياسة خارجية','دهان','سيراميك أرضيات','سيراميك جدران','وزرات','عزل مائي','عزل حراري'],FK={'لياسة داخلية':'plaster','لياسة خارجية':'plaster','دهان':'paint','سيراميك أرضيات':'cf','سيراميك جدران':'cw','وزرات':'skirt','عزل مائي':'wp','عزل حراري':'th'};
@@ -187,17 +173,11 @@ const TB={
  open:{t:'فتحات الأبواب والشبابيك (تُخصم تلقائياً)',cols:[['name','الفتحة','t'],['W','العرض م','n'],['H','الارتفاع م','n'],['N','العدد','n']],out:[['area','المساحة م²']],f:r=>({area:r.W*r.H*r.N}),d:{name:'',W:1,H:1,N:1}},
  fin:{t:'بنود التشطيبات',cols:[['name','الموقع/البند','t'],['type','نوع العمل','s',FT],['L','الطول م','n'],['W','العرض/الارتفاع م','n'],['N','العدد','n'],['ded','خصم فتحات م²','n']],out:[['qty','الكمية',1],['u','الوحدة',1]],f:r=>{const s=r.type=='وزرات';return{qty:s?r.L*r.N:Math.max(0,r.L*r.W*r.N-r.ded),u:s?'م.ط':'م²'}},d:{name:'',type:'لياسة داخلية',L:1,W:1,N:1,ded:0}}
 };
-function lens(r){const P=S.par,d=r.drop/100,hz=(r.L+r.W)/4,wk=r.ntv+r.ntel+r.nnet+r.nint,a=Math.max(0,P.H-P.swH),o=Math.max(0,P.H-P.soH),ac=Math.max(0,P.H-P.acH),x=r.dist+d;
- return{c:(r.nl+r.ns)*hz+(2+r.nac+r.nhw+wk)*x,w:r.nsw*a+(r.ns+r.nhw+wk)*o+r.nac*ac,lenL:r.nl*hz+r.nsw*a+x,lenS:r.ns*(hz+o)+x,lenA:r.nac*(x+ac),lenH:r.nhw*(x+o),lenW:x+o}}
-const mkX=n=>({t:'إضافات يدوية — '+ST[n],cols:[['item','الصنف','s',NM(n)],['spec','المواصفة / المقاس','t'],['qty','الكمية','n'],['price','سعر الوحدة','n']],out:[['u','الوحدة',1],['tot','الإجمالي']],f:r=>({u:UN(n,r.item),tot:r.qty*r.price}),d:{item:NM(n)[0],spec:'',qty:1,price:0}});
-const TBE={rm:{t:'الغرف والمسافات',cols:[['name','الغرفة','t'],['L','الطول م','n'],['W','العرض م','n'],['dist','البعد عن الطبلون م','n'],['drop','انخفاض القسامة عن السقف سم','sn',DROPS],['box','حجم القسامة سم','s',BOXS],['nl','نقاط إضاءة','n'],['nsw','مفاتيح','n'],['ns','مآخذ','n'],['nac','مكيفات','n'],['nhw','سخان','n'],['ntv','تلفزيون','n'],['ntel','تلفون','n'],['nnet','نت','n'],['nint','انترفون','n']],out:[['c','مواسير السقف م'],['w','مواسير الجدران م']],f:lens,d:{name:'',L:3,W:3,dist:5,drop:30,box:'10×15',nl:2,nsw:1,ns:3,nac:0,nhw:0,ntv:0,ntel:0,nnet:0,nint:0}},x1:mkX(1),x2:mkX(2),x3:mkX(3),x4:mkX(4)};
-
 const rd=v=>Math.round(v*100)/100,esc=v=>String(v??'').replace(/"/g,'&quot;');
-const mkDef=()=>{const a=mkDefC(),b=mkDefE();return{meta:a.meta,mix:a.mix,pr:a.pr,px:{},par:{...a.par,...b.par,cur:a.par.cur},tb:{...a.tb,...b.tb}}};
-let S=mkDef(),LASTC={},LASTE={},LASTK=[],AUS={};
+const mkDef=()=>mkDefC();
+let S=mkDef(),LASTC={},LASTK=[];
 function applyTheme(){document.documentElement.dataset.theme=S.par.theme=='light'?'light':'dark'}
-Object.assign(TB,TBE);
-const TABS=[['pr','0. الإعدادات والأسعار'],['exc','1. الأعمال الترابية'],['con','2. الخرسانة'],['reb','3. حديد التسليح'],['wall','4. المباني'],['fin','5. التشطيبات'],['rm','6. كهرباء: الغرف'],['s1','7. كهرباء: التأسيس'],['s2','8. كهرباء: السحب'],['s3','9. كهرباء: التطبيق النهائي'],['s4','10. كهرباء: إضافات'],['pt','11. الحماية والأحمال'],['boq','12. الجدول النهائي الموحد']];
+const TABS=[['ai','🤖 مساعد المخطط (AI)'],['pr','0. الإعدادات والأسعار'],['exc','1. الأعمال الترابية'],['con','2. الخرسانة'],['reb','3. حديد التسليح'],['wall','4. المباني'],['fin','5. التشطيبات'],['boq','6. الجدول النهائي']];
 function cell(t,i,c,v){const [k,,ty,o]=c,a=`data-t="${t}" data-i="${i}" data-k="${k}" data-ty="${ty}"`;if(ty[0]=='s')return`<select ${a}>${o.map(x=>`<option value="${x}" ${x==v?'selected':''}>${k=='grade'?gl(x):x}</option>`).join('')}</select>`;return`<input ${a} ${ty=='n'?'type="number" step="any" min="0"':''} value="${esc(v)}">`}
 function renderT(t){const T=TB[t];$('#tb-'+t).innerHTML=`<table><thead><tr><th>#</th>${T.cols.map(c=>`<th>${c[1]}</th>`).join('')}${T.out.map(o=>`<th>${o[1]}</th>`).join('')}<th>إجراءات</th></tr></thead><tbody>${S.tb[t].map((r,i)=>`<tr data-t="${t}" data-i="${i}"><td>${i+1}</td>${T.cols.map(c=>`<td>${cell(t,i,c,r[c[0]])}</td>`).join('')}${T.out.map(o=>`<td class="c" data-f="${o[0]}">0</td>`).join('')}<td style="white-space:nowrap"><button type="button" class="btn s" data-a="cp" data-t="${t}" data-i="${i}">نسخ</button> <button type="button" class="btn s d" data-a="rm" data-t="${t}" data-i="${i}">حذف</button></td></tr>`).join('')}</tbody><tfoot><tr><td colspan="${T.cols.length+1}">الإجمالي</td>${T.out.map(o=>`<td id="tot-${t}-${o[0]}"></td>`).join('')}<td></td></tr></tfoot></table>`;calc()}
 const sec=(t,id,extra='')=>`<div class="card"><h2>${t}</h2><div class="wrap" id="tb-${id}"></div><div style="margin-top:10px"><button type="button" class="btn p" data-a="add" data-t="${id}">+ إضافة بند / عنصر جديد</button></div>${extra}</div>`;
@@ -205,22 +185,18 @@ const kv=l=>`<table class="kv">${l.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><
 function build(){
  $('#nav').innerHTML=TABS.map((t,i)=>`<button type="button" data-tab="${t[0]}" class="${i?'':'on'}">${t[1]}</button>`).join('');
  const inp=(g,k,l,v,ty='n')=>`<div class="fld"><label>${l}</label><input data-g="${g}" data-k="${k}" data-ty="${ty}" ${ty=='n'?'type="number" step="any"':''} value="${esc(v)}"></div>`;
- const fld=a=>{const[k,l,ty,,o]=a,v=S.par[k];return`<div class="fld"><label>${l}</label>${ty[0]=='s'?`<select data-g="par" data-k="${k}" data-ty="${ty}">${o.map(x=>`<option ${x==v?'selected':''}>${x}</option>`).join('')}</select>`:`<input data-g="par" data-k="${k}" data-ty="n" type="number" step="any" value="${esc(v)}">`}</div>`};
- const stg=s=>`<section class="panel" id="p-s${s}"><div class="card"><h2>${ST[s]} — مواد محسوبة تلقائياً (أدخل سعر الوحدة)</h2><div id="au-${s}"></div><div id="st-${s}" style="margin-top:12px"></div></div>${sec('إضافات يدوية من الأصناف','x'+s)}</section>`;
- $('#main').innerHTML=`<section class="panel on" id="p-pr"><div class="card"><h2>العملة والأسعار</h2><div class="grid g2"><div class="fld"><label>العملة</label><select data-g="par" data-k="cur" data-ty="s">${['ريال','دولار','جنيه','درهم','دينار'].map(x=>`<option ${x==S.par.cur?'selected':''}>${x}</option>`).join('')}</select></div><div class="fld"><label>طريقة الخرسانة</label><select data-g="par" data-k="mix" data-ty="s"><option value="site" ${S.par.mix=='site'?'selected':''}>خلط بالموقع (أسمنت + رمل + كري)</option><option value="ready" ${S.par.mix=='ready'?'selected':''}>خرسانة جاهزة</option></select></div><div class="fld"><label>وضع العرض</label><select data-g="par" data-k="theme" data-ty="s"><option value="dark" ${S.par.theme!='light'?'selected':''}>🌙 داكن (Dark)</option><option value="light" ${S.par.theme=='light'?'selected':''}>☀️ فاتح (Light)</option></select></div><div class="fld"><label>وحدة قياس مقاومة الخرسانة</label><select data-g="par" data-k="cu" data-ty="s">${['MPa','kg/cm²','psi'].map(x=>`<option ${x==S.par.cu?'selected':''}>${x}</option>`).join('')}</select></div>${PR.map(a=>inp('pr',a[0],`${a[1]} / ${a[2]}`,S.pr[a[0]])).join('')}</div></div>
+ $('#main').innerHTML=`<section class="panel on" id="p-ai"><div class="card"><h2>مساعد الذكاء الاصطناعي: تحليل المخطط</h2><div id="aiChat" style="height:260px;overflow:auto;border:1px solid var(--ln);border-radius:12px;padding:8px;background:var(--in)"></div><div class="grid g2" style="margin-top:10px"><div class="fld"><label>ارفع المخطط (صورة أو PDF)</label><input type="file" id="aiFile" accept="image/*,application/pdf"><span id="aiFn" style="color:var(--ok);font-size:13px"></span></div><div class="fld"><label>رسالة (اختياري)</label><textarea id="aiMsg" rows="2" style="width:100%;background:var(--in);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:8px" placeholder="مثال: الطابق الأرضي فقط، جدران 20 سم"></textarea></div></div><div style="margin-top:10px"><button type="button" class="btn p" data-ai="send">إرسال وتحليل</button></div><div id="aiPrev"></div></div>
+ <div class="card"><h2>الوضع اليدوي (بدون خادم)</h2><p style="color:var(--mu);font-size:13px">انسخ التعليمات وأعطها مع المخطط لأي ذكاء اصطناعي ثم الصق الرد (JSON) هنا.</p><button type="button" class="btn" data-ai="copy">نسخ التعليمات</button><textarea id="aiJson" rows="6" dir="ltr" style="width:100%;margin-top:10px;background:var(--in);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:8px" placeholder="الصق رد JSON هنا"></textarea><div style="margin-top:10px"><button type="button" class="btn" data-ai="prev">معاينة</button></div></div></section>
+ <section class="panel" id="p-pr"><div class="card"><h2>العملة والأسعار</h2><div class="grid g2"><div class="fld"><label>العملة</label><select data-g="par" data-k="cur" data-ty="s">${['ريال','دولار','جنيه','درهم','دينار'].map(x=>`<option ${x==S.par.cur?'selected':''}>${x}</option>`).join('')}</select></div><div class="fld"><label>طريقة الخرسانة</label><select data-g="par" data-k="mix" data-ty="s"><option value="site" ${S.par.mix=='site'?'selected':''}>خلط بالموقع (أسمنت + رمل + كري)</option><option value="ready" ${S.par.mix=='ready'?'selected':''}>خرسانة جاهزة</option></select></div><div class="fld"><label>وضع العرض</label><select data-g="par" data-k="theme" data-ty="s"><option value="dark" ${S.par.theme!='light'?'selected':''}>🌙 داكن (Dark)</option><option value="light" ${S.par.theme=='light'?'selected':''}>☀️ فاتح (Light)</option></select></div><div class="fld"><label>وحدة قياس مقاومة الخرسانة</label><select data-g="par" data-k="cu" data-ty="s">${['MPa','kg/cm²','psi'].map(x=>`<option ${x==S.par.cu?'selected':''}>${x}</option>`).join('')}</select></div>${PR.map(a=>inp('pr',a[0],`${a[1]} / ${a[2]}`,S.pr[a[0]])).join('')}</div></div>
  <div class="card"><h2>نسب الهالك والمعاملات</h2><div class="grid g2">${PA.map(a=>inp('par',a[0],a[1],S.par[a[0]])).join('')}</div></div>
- <div class="card"><h2>مقاومة الخرسانة (حسب الكود) ومكونات الخلطة لكل م³</h2><div class="wrap"><table><thead><tr><th>المقاومة المميزة</th><th>أسمنت (كيس 50 كجم)</th><th>رمل م³</th><th>كري م³</th></tr></thead><tbody>${GR.map(g=>`<tr><td><b>${gl(g)}</b></td>${[0,1,2].map(i=>`<td><input type="number" step="any" data-mx="${g}" data-i="${i}" value="${S.mix[g][i]}"></td>`).join('')}</tr>`).join('')}</tbody></table></div><p style="color:var(--mu);font-size:13px">المقاومة الأساسية بوحدة MPa (N/mm²) وتتحول الوحدات الأخرى تلقائياً (1 MPa ≈ 10.197 كجم/سم²). المكونات قيم تقديرية قابلة للتعديل.</p></div>
- <div class="card"><h2>إعدادات أعمال الكهرباء</h2><div class="grid g2">${SET.filter(a=>a[0]!='cur').map(fld).join('')}</div></div></section>
+ <div class="card"><h2>مقاومة الخرسانة (حسب الكود) ومكونات الخلطة لكل م³</h2><div class="wrap"><table><thead><tr><th>المقاومة المميزة</th><th>أسمنت (كيس 50 كجم)</th><th>رمل م³</th><th>كري م³</th></tr></thead><tbody>${GR.map(g=>`<tr><td><b>${gl(g)}</b></td>${[0,1,2].map(i=>`<td><input type="number" step="any" data-mx="${g}" data-i="${i}" value="${S.mix[g][i]}"></td>`).join('')}</tr>`).join('')}</tbody></table></div><p style="color:var(--mu);font-size:13px">المقاومة الأساسية بوحدة MPa (N/mm²) وتتحول الوحدات الأخرى تلقائياً (1 MPa ≈ 10.197 كجم/سم²). المكونات قيم تقديرية قابلة للتعديل.</p></div></section>
  <section class="panel" id="p-exc">${sec('1. الحفر','exc','<div id="s-exc" style="margin-top:12px"></div>')}</section>
  <section class="panel" id="p-con">${sec('2. الخرسانة العادية والمسلحة (م³)','con','<div id="s-con" style="margin-top:12px"></div>')}</section>
  <section class="panel" id="p-reb">${sec('3. حديد التسليح','reb','<div id="s-reb" style="margin-top:12px"></div>')}</section>
  <section class="panel" id="p-wall">${sec('4. أعمال المباني (بلك/طوب)','wall')}${sec('فتحات الأبواب والشبابيك','open','<div id="s-wall" style="margin-top:12px"></div>')}</section>
  <section class="panel" id="p-fin">${sec('5. أعمال التشطيبات','fin','<div id="s-fin" style="margin-top:12px"></div>')}</section>
- <section class="panel" id="p-rm">${sec('الغرف وأبعادها والبعد عن الطبلون وعدد النقاط','rm','<div style="margin-top:10px"><button type="button" class="btn" data-a="r2f">↧ نقل مساحات الغرف إلى التشطيبات (سيراميك أرضيات)</button></div><p style="color:var(--mu);font-size:13px">انخفاض القسامة: المسافة بالسنتيمتر من أسفل السقف إلى غرفة التوزيع. النقاط الأفقية تُقدّر بمتوسط (الطول+العرض)/4 لكل نقطة.</p>')}</section>
- ${stg(1)}${stg(2)}${stg(3)}${stg(4)}
- <section class="panel" id="p-pt"><div class="card"><h2>الحماية والأحمال</h2><div id="prot"></div></div></section>
  
- <section class="panel" id="p-boq"><div class="kpi" id="kpi"></div><div class="card"><h2>جدول الكميات والتكلفة النهائي الموحد (مدني + كهرباء)</h2><div class="wrap"><table id="boq"></table></div></div></section>`;
+ <section class="panel" id="p-boq"><div class="kpi" id="kpi"></div><div class="card"><h2>جدول الكميات والتكلفة النهائي الموحد (الأعمال المدنية)</h2><div class="wrap"><table id="boq"></table></div></div></section>`;
  Object.keys(TB).forEach(renderT);bindMeta();
 }
 function calcTables(){const C={},T={};for(const t in TB){C[t]=S.tb[t].map(r=>TB[t].f(r));T[t]={};TB[t].out.forEach(([k,,x])=>{T[t][k]=x?0:C[t].reduce((s,c)=>s+(+c[k]||0),0)})}
@@ -255,63 +231,21 @@ function calcC(C,T){const P=S.par,pr=S.pr;
  
  const tot=B.reduce((s,r)=>s+r[5],0);LASTC={C,B,tot,vol:T.con.vol,st,ex};
 }
-function renderAuto(s,list){const id='#au-'+s,sig=list.map(x=>x[0]).join('|');
- if(AUS[s]!==sig||!$(id+' table')){AUS[s]=sig;$(id).innerHTML=`<div class="wrap"><table><thead><tr><th>#</th><th>البند</th><th>الوحدة</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>${list.map((x,i)=>`<tr><td>${i+1}</td><td style="text-align:right">${esc(x[0])}</td><td>${x[1]}</td><td class="c" data-q="${i}"></td><td><input type="number" step="any" min="0" data-px="${esc(x[0])}" value="${S.px[x[0]]||''}" placeholder="0"></td><td class="c" data-t2="${i}"></td></tr>`).join('')}</tbody></table></div>`}
- list.forEach((x,i)=>{$(`${id} [data-q="${i}"]`).textContent=fmt(x[2],0);$(`${id} [data-t2="${i}"]`).textContent=fmt(x[2]*x[3])})}
-
-function calcE(C,T){const P=S.par,R=S.tb.rm,cur=P.cur;
- const q=k=>R.reduce((s,r)=>s+(+r[k]||0),0),nl=q('nl'),nsw=q('nsw'),ns=q('ns'),nac=q('nac'),nhw=q('nhw'),ntv=q('ntv'),ntel=q('ntel'),nnet=q('nnet'),nint=q('nint'),wk=ntv+ntel+nnet+nint,L=C.rm;
- const cL=L.reduce((s,l)=>s+l.c,0),wL=L.reduce((s,l)=>s+l.w,0),pw=1+P.wP/100,ww=1+P.wW/100,allB=nsw+ns+nhw+wk+R.length;
- const Ls={},ad=(z,l)=>{Ls[z]=(Ls[z]||0)+l};let tl=0,tt=0,ti=0,tn=0;
- R.forEach((r,i)=>{const l=L[i];ad(P.szL,l.lenL*3+(r.nsw+1)*P.bx);ad(P.szS,l.lenS*3+r.ns*P.bx);ad(P.szAC,l.lenA*3);ad(P.szHW,l.lenH*3);tl+=r.ntel*l.lenW;tt+=r.ntv*l.lenW;ti+=r.nint*l.lenW;tn+=r.nnet*l.lenW});
- const A={1:{},2:{},3:{},4:{}},add=(s,k,u,n)=>{if(n>0){const e=A[s][k]||(A[s][k]={u,q:0});e.q+=n}};
- R.forEach(r=>add(1,`قسامة ${r.box} سم`,'قطعة',1));
- add(1,`ماسورة ${P.pT} ${P.pS}"`,'م',Math.ceil(cL*pw));add(1,`ماسورة ${P.pT2} ${P.pS2}"`,'م',Math.ceil(wL*pw));
- add(1,`علبة ${P.bm} ${P.bsw} (مفاتيح)`,'قطعة',nsw);add(1,`علبة ${P.bm} ${P.bso} (مآخذ وسخان)`,'قطعة',ns+nhw);add(1,`علبة ${P.bm} مفرد (تيار خفيف)`,'قطعة',wk);add(1,`طبلون ${P.ph} ${P.pn}`,'قطعة',1);
- const ft=parseInt((P.wb.match(/\d+/)||[550])[0]);
- for(const z in Ls){const m=Ls[z]*ww;P.wt=='حراري'?add(2,`سلك نحاس حراري ${z} مم² (${P.wb})`,'رول',Math.ceil(m/(ft*0.3048))):add(2,`سلك فليكس مزدوج ${z} مم²`,'م',Math.ceil(m))}
- add(2,`سلك تلفون ${P.tel} خط`,'م',Math.ceil(tl*ww));add(2,'سلك تلفزيون (كوكس)','م',Math.ceil(tt*ww));add(2,`سلك سماعة انترفون ${P.ic} خط`,'م',Math.ceil(ti*ww));add(2,`سلك نت ${P.nc} خط`,'م',Math.ceil(tn*ww));add(2,'شريط لاصق عازل','رول',Math.ceil(allB/12));
- add(3,`مفتاح ${P.way} ${P.gang}`,'قطعة',nsw);add(3,`مأخذ كهرباء ${P.soT}`,'قطعة',ns);add(3,'مأخذ تلفون','قطعة',ntel);add(3,'مأخذ تلفزيون','قطعة',ntv);add(3,'مأخذ نت','قطعة',nnet);add(3,'سماعة انترفون','قطعة',nint);add(3,`مأخذ سخان ${P.hwA} أمبير`,'قطعة',nhw);
- const cl=Math.ceil(nl/P.perL),cs=Math.ceil(ns/P.perS),bq={},bk=(a,n)=>{const k=`قاطع ${P.bp} ${P.bt} ${a}A`;bq[k]=(bq[k]||0)+n};
- bk(P.brL,cl);bk(P.brS,cs);bk(P.brAc,nac);bk(P.brHw,nhw);for(const k in bq)add(3,k,'قطعة',Math.ceil(bq[k]*(1+P.spare/100)));
- add(3,`قاطع رئيسي ${P.ph=='3 فاز'?'3 فاز':'رئيسي خطين'} ${P.bt} ${P.brMain}A`,'قطعة',1);add(3,`قاطع تسرب أرضي RCCB ${P.brMain}A`,'قطعة',1);
- add(3,`لمبة ${P.lampV}V ${P.lampW}W`,'قطعة',nl);add(3,`ابية لمبات ${P.base}`,'قطعة',nl);add(3,`مسامير ${P.scT} ${P.scS} مم`,'قطعة',allB*2);
- const pt=Math.ceil((cL+wL)*pw);
- add(4,'لاصق PVC','علبة',Math.ceil(pt/60));add(4,'سلك سحب','رول',Math.ceil(pt/100));add(4,'مشابك تثبيت مواسير','قطعة',Math.ceil(wL*pw/0.6));add(4,'جبس / مونة تثبيت العلب','كيس',Math.ceil(allB/10));add(4,'أغطية علب مؤقتة','قطعة',allB);add(4,'تكسير وسد قنوات الجدران (عمالة)','م',Math.ceil(wL));add(4,'قضيب تأريض','قطعة',1);add(4,'كابل نحاس عاري للتأريض 16 مم²','م',15);add(4,'حماية من الصواعق SPD','قطعة',1);
- const boq=[],au={};let tot=0,no=0;
- for(let s=1;s<=4;s++){const list=Object.entries(A[s]).map(([k,e])=>[k,e.u,e.q,S.px[k]||0]);renderAuto(s,list);
-  const a=list.reduce((z,x)=>z+x[2]*x[3],0),x=C['x'+s].reduce((z,c)=>z+c.tot,0);tot+=a+x;
-  $('#st-'+s).innerHTML=kv([['إجمالي المواد المحسوبة ('+cur+')',fmt(a)],['إجمالي الإضافات اليدوية ('+cur+')',fmt(x)],['إجمالي المرحلة ('+cur+')',fmt(a+x)]]);
-  au[s]={rows:list.map(x=>[x[0],x[1],x[2],rd(x[3]),rd(x[2]*x[3])]),sum:a};
-  list.forEach(x=>boq.push([x[0],ST[s],x[1],x[2],rd(x[3]),rd(x[2]*x[3])]));
-  S.tb['x'+s].forEach((r,i)=>boq.push([r.item+(r.spec?' - '+r.spec:''),ST[s],C['x'+s][i].u,r.qty,rd(r.price),rd(C['x'+s][i].tot)]))}
- const wl=nl*P.lampW,ws=ns*P.socW,wa=nac*P.acW,wh=nhw*P.hwW,tw=wl+ws+wa+wh,dm=tw*P.dem,Ia=P.ph=='3 فاز'?dm/(1.732*400*.9):dm/(230*.9),rec=BRKR.find(b=>b>=Ia*1.25)||'أكبر من 125';
- const prot=[['حمل الإضاءة (وات)',wl],['حمل المآخذ (وات)',ws],['حمل المكيفات (وات)',wa],['حمل السخانات (وات)',wh],['إجمالي الحمل (وات)',tw],['بعد معامل الطلب (وات)',rd(dm)],['تيار الحمل الرئيسي (A)',rd(Ia)],['القاطع الرئيسي المقترح (A) = 1.25×التيار',rec],['القاطع الرئيسي المختار (A)',P.brMain+(typeof rec=='number'&&P.brMain<rec?'  ⚠ أصغر من المقترح':'')],['عدد دوائر الإضاءة',cl],['عدد دوائر المآخذ',cs],['قاطع تسرب RCCB (30 مللي أمبير)','مطلوب على الدوائر']];
- const circ=[['الإضاءة',P.szL,P.perL*P.lampW/230,P.brL],['المآخذ',P.szS,P.perS*P.socW/230,P.brS],['المكيف',P.szAC,P.acW/230,P.brAc],['السخان',P.szHW,P.hwW/230,P.brHw]].map(([n,z,I,b])=>[n,z,rd(I),CAP[z],b,b<I?'⚠ القاطع أصغر من تيار الحمل':b>CAP[z]?'⚠ القاطع أكبر من تحمل السلك':'مناسب']);
- $('#prot').innerHTML=kv(prot.map(x=>[x[0],typeof x[1]=='number'?fmt(x[1],Number.isInteger(x[1])?0:2):x[1]]))+`<div class="wrap" style="margin-top:12px"><table><thead><tr><th>الدائرة</th><th>المقطع مم²</th><th>تيار الحمل A</th><th>تحمل السلك A (تقريبي)</th><th>القاطع A</th><th>الحالة</th></tr></thead><tbody>${circ.map(c=>`<tr>${c.map((v,i)=>`<td${i==5&&v[0]=='⚠'?' style="color:#fb7185;font-weight:700"':''}>${v}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
- LASTE={C,boq,tot,prot,circ,au};
-
-}
-function renderMaster(){const cur=S.par.cur,c=LASTC,e=LASTE,gt=c.tot+e.tot,ar=+S.meta.area||0,f2=v=>fmt(v),fq=v=>fmt(v,Number.isInteger(v)?0:2);let n=0;
+function renderMaster(){const cur=S.par.cur,c=LASTC,gt=c.tot,ar=+S.meta.area||0,f2=v=>fmt(v),fq=v=>fmt(v,Number.isInteger(v)?0:2);let n=0;
  const sc=t=>`<tr class="sec"><td colspan="6">${t}</td></tr>`,row=r=>`<tr><td>${++n}</td><td style="text-align:right">${esc(r[0])}</td><td>${r[1]}</td><td>${fq(r[2])}</td><td>${f2(r[3])}</td><td class="c">${f2(r[4])}</td></tr>`,sub=(t,v)=>`<tr class="sub"><td colspan="5">${t}</td><td>${f2(v)}</td></tr>`;
- $('#boq').innerHTML=`<thead><tr><th>رقم البند</th><th>بيان الأعمال</th><th>الوحدة</th><th>الكمية</th><th>سعر الوحدة (${cur})</th><th>الإجمالي (${cur})</th></tr></thead><tbody>${sc('أولاً: الأعمال المدنية')}${c.B.map(r=>row([r[1],r[2],r[3],r[4],r[5]])).join('')}${sub('إجمالي الأعمال المدنية',c.tot)}${sc('ثانياً: الأعمال الكهربائية')}${e.boq.map(r=>row([r[0]+' — '+r[1],r[2],r[3],r[4],r[5]])).join('')}${sub('إجمالي الأعمال الكهربائية',e.tot)}</tbody><tfoot><tr><td colspan="5">المجموع الكلي للمشروع (${cur})</td><td>${f2(gt)}</td></tr></tfoot>`;
- LASTK=[['إجمالي الخرسانة م³',rd(c.vol)],['إجمالي الحديد (طن)',rd(c.st/1000)],['الأعمال المدنية ('+cur+')',rd(c.tot)],['الأعمال الكهربائية ('+cur+')',rd(e.tot)],['التكلفة / م² ('+cur+')',ar?rd(gt/ar):'—'],['التكلفة الكلية ('+cur+')',rd(gt)]];
- $('#kpi').innerHTML=LASTK.map((k,i)=>`<div class="k ${i>3?'t':''}"><span>${k[0]}</span><b>${typeof k[1]=='number'?fmt(k[1],Number.isInteger(k[1])?0:2):k[1]}</b></div>`).join('')}
-function calc(){const{C,T}=calcTables();calcC(C,T);calcE(C,T);renderMaster()}
+ $('#boq').innerHTML=`<thead><tr><th>رقم البند</th><th>بيان الأعمال</th><th>الوحدة</th><th>الكمية</th><th>سعر الوحدة (${cur})</th><th>الإجمالي (${cur})</th></tr></thead><tbody>${sc('الأعمال المدنية')}${c.B.map(r=>row([r[1],r[2],r[3],r[4],r[5]])).join('')}${sub('إجمالي الأعمال المدنية',c.tot)}</tbody><tfoot><tr><td colspan="5">المجموع الكلي للمشروع (${cur})</td><td>${f2(gt)}</td></tr></tfoot>`;
+ LASTK=[['إجمالي الخرسانة م³',rd(c.vol)],['إجمالي الحديد (طن)',rd(c.st/1000)],['الأعمال المدنية ('+cur+')',rd(c.tot)],['التكلفة / م² ('+cur+')',ar?rd(gt/ar):'—'],['التكلفة الكلية ('+cur+')',rd(gt)]];
+ $('#kpi').innerHTML=LASTK.map((k,i)=>`<div class="k ${i>2?'t':''}"><span>${k[0]}</span><b>${typeof k[1]=='number'?fmt(k[1],Number.isInteger(k[1])?0:2):k[1]}</b></div>`).join('')}
+function calc(){const{C,T}=calcTables();calcC(C,T);renderMaster()}
 const dom=id=>$$('#'+id+' tr').map(tr=>[...tr.children].map(td=>td.textContent));
-function model(){const m=S.meta,cur=S.par.cur,c=LASTC,e=LASTE,M=[],mk=(t,h,rows,f)=>M.push({title:t,head:['#',...h],rows:rows.map((r,i)=>[i+1,...r]),foot:f?['',...f]:null});
- mk('المنظومة الهندسية لحساب الكميات والمواصفات (BOQ Pro)',['المشروع','المالك','التاريخ','مساحة البناء م²'],[[m.proj||'—',m.owner||'—',m.date,+m.area||0]]);
+function model(){const m=S.meta,cur=S.par.cur,c=LASTC,M=[],mk=(t,h,rows,f)=>M.push({title:t,head:['#',...h],rows:rows.map((r,i)=>[i+1,...r]),foot:f?['',...f]:null});
+ mk('المنظومة الهندسية لحساب الكميات والمواصفات (BOQ Pro)',['المشروع','المالك','التاريخ','مساحة البناء م²','طول المبنى م','عرض المبنى م','ارتفاع المبنى م'],[[m.proj||'—',m.owner||'—',m.date,+m.area||0,+m.bL||0,+m.bW||0,+m.bH||0]]);
  mk('ملخص المشروع',['المؤشر','القيمة'],LASTK);
  mk('جدول الكميات — الأعمال المدنية',['بيان الأعمال','الوحدة','الكمية','سعر الوحدة ('+cur+')','الإجمالي ('+cur+')'],c.B.map(r=>[r[1],r[2],rd(r[3]),rd(r[4]),rd(r[5])]),['','','',`إجمالي الأعمال المدنية (${cur})`,rd(c.tot)]);
- mk('جدول الكميات — الأعمال الكهربائية',['بيان الأعمال','الوحدة','الكمية','سعر الوحدة ('+cur+')','الإجمالي ('+cur+')'],e.boq.map(r=>[r[0]+' ('+r[1]+')',r[2],r[3],r[4],r[5]]),['','','',`إجمالي الأعمال الكهربائية (${cur})`,rd(e.tot)]);
- mk('الإجمالي العام',['البيان','المبلغ ('+cur+')'],[['الأعمال المدنية',rd(c.tot)],['الأعمال الكهربائية',rd(e.tot)],['المجموع الكلي',rd(c.tot+e.tot)]]);
+ mk('الإجمالي العام',['البيان','المبلغ ('+cur+')'],[['الأعمال المدنية',rd(c.tot)],['المجموع الكلي',rd(c.tot)]]);
  ['exc','con','reb','wall','open','fin'].forEach(t=>{const T=TB[t];mk(T.t,[...T.cols.map(q=>q[1]),...T.out.map(o=>o[1])],S.tb[t].map((r,i)=>[...T.cols.map(q=>q[0]=='grade'?gl(r.grade):r[q[0]]),...T.out.map(o=>{const v=c.C[t][i][o[0]];return typeof v=='number'?Math.round(v*1000)/1000:v})]));
   const sm={exc:'s-exc',con:'s-con',reb:'s-reb',wall:'s-wall',fin:'s-fin'}[t];if(sm)mk('ملخص: '+T.t,['البيان','القيمة'],dom(sm))});
- const T=TB.rm;mk(T.t,[...T.cols.map(c=>c[1]),...T.out.map(o=>o[1])],S.tb.rm.map((r,i)=>[...T.cols.map(c=>r[c[0]]),...T.out.map(o=>rd(LASTE.C.rm[i][o[0]]))]));
- for(let s=1;s<=4;s++){const a=LASTE.au[s];if(a.rows.length)mk(`المرحلة ${s}: ${ST[s]}`,['البند','الوحدة','الكمية','سعر الوحدة','الإجمالي'],a.rows,['','','','الإجمالي',rd(a.sum)]);
-  if(S.tb['x'+s].length)mk('إضافات يدوية — '+ST[s],['الصنف','المواصفة','الوحدة','الكمية','سعر الوحدة','الإجمالي'],S.tb['x'+s].map((r,i)=>[r.item,r.spec,LASTE.C['x'+s][i].u,r.qty,r.price,rd(LASTE.C['x'+s][i].tot)]))}
- mk('الحماية والأحمال',['البيان','القيمة'],LASTE.prot);
- mk('فحص الدوائر',['الدائرة','المقطع مم²','تيار الحمل A','تحمل السلك A','القاطع A','الحالة'],LASTE.circ);
+
  return M;
 }
 function report(M){const H='background:#1e3a5f;color:#ffffff;font-weight:bold;border:1px solid #000;padding:5px;text-align:center',D='border:1px solid #000;padding:4px;text-align:center',F='background:#d9e2f3;font-weight:bold;border:1px solid #000;padding:5px;text-align:center',TT='font-size:14pt;font-weight:bold;background:#0b4f6c;color:#ffffff;padding:8px;text-align:center;border:1px solid #000',v=x=>typeof x=='number'?fmt(x,Number.isInteger(x)?0:2):esc(x);
@@ -335,10 +269,9 @@ function dl(blob,name){
 document.addEventListener('input',e=>{const d=e.target.dataset;if(!d)return;if(d.px!==undefined){S.px[d.px]=parseFloat(e.target.value)||0;calc();return}if(d.mx!==undefined){S.mix[d.mx][d.i]=parseFloat(e.target.value)||0;calc();return}if(!d.k)return;let v=e.target.value;if(d.ty=='n'||d.ty=='sn')v=parseFloat(v)||0;if(d.g)S[d.g][d.k]=v;else if(d.t)S.tb[d.t][d.i][d.k]=v;if(d.k=='theme')applyTheme();if(d.k=='cu'){build();bindMeta();return}calc()});
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
  if(d.tab){$$('nav button').forEach(x=>x.classList.toggle('on',x===b));$$('.panel').forEach(p=>p.classList.toggle('on',p.id=='p-'+d.tab));window.scrollTo({top:0,behavior:'smooth'})}
- if(d.a=='r2f'){let k=0;S.tb.rm.forEach(r=>{if(!S.tb.fin.some(f=>f.name==r.name&&f.type=='سيراميك أرضيات')){S.tb.fin.push({name:r.name,type:'سيراميك أرضيات',L:r.L,W:r.W,N:1,ded:0});k++}});renderT('fin');toast(k?`تم نقل ${k} غرفة إلى التشطيبات ✓`:'كل الغرف منقولة مسبقاً');return}
  if(d.a&&d.t){const a=S.tb[d.t];if(d.a=='add')a.push({...TB[d.t].d});if(d.a=='cp')a.splice(+d.i+1,0,{...a[d.i]});if(d.a=='rm'){if(a.length<2&&!confirm('هذا آخر صف، هل تريد حذفه؟'))return;a.splice(d.i,1)}renderT(d.t)}});
 $('#bSave').onclick=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));toast('تم حفظ المشروع في المتصفح ✓')}catch(x){toast('تعذر الحفظ في المتصفح')}};
-$('#bNew').onclick=()=>{if(confirm('سيتم تصفير جميع البيانات. هل أنت متأكد؟')){const th=S.par.theme,cu=S.par.cu;S=mkDef();S.par.theme=th;S.par.cu=cu;AUS={};build();bindMeta();toast('تم إنشاء مشروع جديد')}};
+$('#bNew').onclick=()=>{if(confirm('سيتم تصفير جميع البيانات. هل أنت متأكد؟')){const th=S.par.theme,cu=S.par.cu;S=mkDef();S.par.theme=th;S.par.cu=cu;build();bindMeta();toast('تم إنشاء مشروع جديد')}};
 $('#bResetAll').onclick=()=>{
  if(!confirm('تحذير: سيتم حذف بيانات المشروع الحالية والبيانات المحفوظة في هذا المتصفح، وإرجاع جميع الإعدادات والأسعار والجداول إلى القيم الافتراضية. لا يمكن التراجع عن هذه العملية. هل تريد المتابعة؟'))return;
  try{
@@ -346,8 +279,7 @@ $('#bResetAll').onclick=()=>{
   localStorage.removeItem('boqpro_v1');
  }catch(err){console.warn('تعذر حذف التخزين المحلي:',err)}
  S=mkDef();
- AUS={};
- LASTC={};LASTE={};LASTK=[];
+ LASTC={};LASTK=[];
  applyTheme();
  build();
  bindMeta();
@@ -364,6 +296,55 @@ $('#bXls').onclick=()=>{
 };
 try{const s=localStorage.getItem(KEY)||localStorage.getItem('boqpro_v1');if(s){const o=JSON.parse(s),d=mkDef();if(o.tb&&(o.par||o.pr)){S={meta:{...d.meta,...o.meta},mix:{...d.mix,...(o.mix||{})},pr:{...d.pr,...(o.pr||{})},px:o.px||{},par:{...d.par,...(o.par||{})},tb:{...d.tb,...o.tb}};S.tb.con.forEach(r=>{r.grade=({C15:'17',C20:'21',C25:'25',C30:'30'})[r.grade]||r.grade})}}}catch(x){}
 applyTheme();build();bindMeta();
+
+// ---------- مساعد الذكاء الاصطناعي: تحليل المخطط ----------
+const AI_ENDPOINT='/api/analyze'; // دالة خادم (Vercel) تحمل المفتاح. المفتاح لا يوضع هنا أبدا.
+const AI_SCHEMA='{"meta":{"proj":"","owner":"","area":0,"bL":0,"bW":0,"bH":0},"exc":[{"name":"","L":0,"W":0,"D":0,"N":1}],"con":[{"name":"","type":"قاعدة|لبشة/شداد|رقبة عمود|خرسانة عادية|عمود|جدار قص|كمرة|سقف مصمت|فلات سلاب|سقف هوردي","grade":"17|21|25|28|30|35","L":0,"W":0,"H":0,"N":1}],"reb":[{"el":"","dia":"8|10|12|14|16|18|20|25|32","len":0,"n":0,"cnt":1}],"wall":[{"name":"","L":0,"H":0,"th":"10|15|20","N":1}],"open":[{"name":"","W":0,"H":0,"N":1}],"fin":[{"name":"","type":"'+FT.join('|')+'","L":0,"W":0,"N":1,"ded":0}],"notes":""}';
+const AI_PROMPT='حلل المخطط المرفق (معماري/إنشائي) واستخرج اسم المشروع وأبعاد المبنى (bL الطول وbW العرض وbH الارتفاع الكلي للمبنى بالمتر) وبيانات الحصر. أعد JSON فقط بدون أي شرح وبهذا الشكل بالضبط (الأبعاد بالمتر عدا السمك بالسم، والمساحة بالمتر المربع). ضع في notes أي افتراض أو بند غير واضح. لا تخترع قيما غير موجودة: إن لم تظهر في المخطط اتركها فارغة أو صفرا.\n'+AI_SCHEMA;
+let AIF=null,AIP=null;
+const aiSay=(who,t)=>{const c=$('#aiChat');if(!c)return;const d=document.createElement('div');d.style.cssText='margin:8px 0;padding:10px 12px;border-radius:12px;max-width:92%;white-space:pre-wrap;'+(who=='u'?'background:#0e749033;margin-right:0;margin-left:auto':'background:#5b21b633');d.textContent=t;c.appendChild(d);c.scrollTop=c.scrollHeight};
+const aiNum=v=>{v=parseFloat(String(v).replace(/,/g,''));return isFinite(v)&&v>=0?v:0};
+const aiPick=(v,list,def)=>list.map(String).includes(String(v))?(typeof list[0]=='number'?+v:String(v)):def;
+function aiClean(o){
+ const arr=k=>Array.isArray(o[k])?o[k]:[],R={meta:{},tb:{}},m=o.meta||{};
+ if(m.proj)R.meta.proj=String(m.proj).slice(0,120);if(m.owner)R.meta.owner=String(m.owner).slice(0,120);['bL','bW','bH'].forEach(k=>{if(aiNum(m[k]))R.meta[k]=aiNum(m[k])});if(aiNum(m.area))R.meta.area=aiNum(m.area);else if(R.meta.bL&&R.meta.bW)R.meta.area=Math.round(R.meta.bL*R.meta.bW*100)/100;
+ R.tb.exc=arr('exc').map(r=>({name:String(r.name||'ح'),L:aiNum(r.L),W:aiNum(r.W),D:aiNum(r.D),N:aiNum(r.N)||1}));
+ R.tb.con=arr('con').map(r=>({name:String(r.name||''),type:aiPick(r.type,CT,'قاعدة'),grade:aiPick(r.grade,GR,'25'),L:aiNum(r.L),W:aiNum(r.W),H:aiNum(r.H),N:aiNum(r.N)||1}));
+ R.tb.reb=arr('reb').map(r=>({el:String(r.el||''),dia:aiPick(r.dia,[8,10,12,14,16,18,20,25,32],12),len:aiNum(r.len),n:aiNum(r.n),cnt:aiNum(r.cnt)||1}));
+ R.tb.wall=arr('wall').map(r=>({name:String(r.name||''),L:aiNum(r.L),H:aiNum(r.H),th:aiPick(r.th,[10,15,20],20),N:aiNum(r.N)||1}));
+ R.tb.open=arr('open').map(r=>({name:String(r.name||''),W:aiNum(r.W),H:aiNum(r.H),N:aiNum(r.N)||1}));
+ R.tb.fin=arr('fin').map(r=>({name:String(r.name||''),type:aiPick(r.type,FT,'لياسة داخلية'),L:aiNum(r.L),W:aiNum(r.W),N:aiNum(r.N)||1,ded:aiNum(r.ded)}));
+ R.notes=String(o.notes||'').slice(0,1500);return R}
+function aiParse(t){const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<a)throw new Error('لم أجد بيانات JSON في الرد');return JSON.parse(t.slice(a,b+1))}
+const AIN={exc:'الحفر',con:'الخرسانة',reb:'الحديد',wall:'الجدران',open:'الفتحات',fin:'التشطيبات'};
+function aiPreview(raw){
+ try{const o=typeof raw=='string'?aiParse(raw):raw;AIP=aiClean(o);
+  const parts=Object.keys(AIN).filter(k=>AIP.tb[k].length).map(k=>`${AIN[k]}: ${AIP.tb[k].length} صف`);
+  if(!parts.length&&!Object.keys(AIP.meta).length)throw new Error('لا توجد بنود قابلة للتطبيق');
+  $('#aiPrev').innerHTML=`<div class="card" style="margin-top:12px"><h2>معاينة قبل التطبيق</h2><p>${esc(parts.join(' | ')||'بيانات المشروع فقط')}${Object.keys(AIP.meta).length?' | بيانات المشروع':''}</p>${Object.keys(AIP.meta).length?`<p>${esc(Object.entries(AIP.meta).map(([k,v])=>({proj:'المشروع',owner:'المالك',area:'المساحة م²',bL:'الطول م',bW:'العرض م',bH:'الارتفاع م'}[k]+': '+v)).join(' | '))}</p>`:''}${AIP.notes?`<p style="color:var(--go)">ملاحظات الذكاء الاصطناعي: ${esc(AIP.notes)}</p>`:''}<p style="color:var(--mu);font-size:13px">التطبيق يستبدل الجداول المذكورة فقط ويبقي الباقي. راجع الأرقام بعد التطبيق، فهي تقدير من المخطط.</p><button type="button" class="btn p" data-ai="apply">تطبيق على الجداول</button></div>`;
+  return true}catch(e){AIP=null;$('#aiPrev').innerHTML='';aiSay('a','تعذر قراءة البيانات: '+e.message);return false}}
+function aiApply(){if(!AIP)return;Object.assign(S.meta,AIP.meta);
+ Object.keys(AIN).forEach(k=>{if(AIP.tb[k].length)S.tb[k]=AIP.tb[k]});
+ Object.keys(AIN).forEach(renderT);bindMeta();calc();$('#aiPrev').innerHTML='';AIP=null;
+ aiSay('a','تم تطبيق البيانات على الجداول. راجع تبويبات الحفر والخرسانة والحديد والمباني والتشطيبات ثم الجدول النهائي، وأدخل الأسعار.');toast('تم تطبيق بيانات المخطط ✓')}
+function aiFile(f){AIF=null;$('#aiFn').textContent='';if(!f)return;
+ if(f.type=='application/pdf'){if(f.size>4e6){aiSay('a','ملف PDF أكبر من 4 ميجا. صغّره أو ارفع صورة للمخطط.');return}
+  const r=new FileReader();r.onload=()=>{AIF={mime:f.type,data:String(r.result).split(',')[1]};$('#aiFn').textContent='📄 '+f.name};r.readAsDataURL(f)}
+ else if(f.type.startsWith('image/')){const img=new Image,u=URL.createObjectURL(f);img.onload=()=>{const k=Math.min(1,1800/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);AIF={mime:'image/jpeg',data:c.toDataURL('image/jpeg',.85).split(',')[1]};$('#aiFn').textContent='🖼 '+f.name;URL.revokeObjectURL(u)};img.onerror=()=>aiSay('a','تعذر قراءة الصورة');img.src=u}
+ else aiSay('a','الصيغ المدعومة: صورة أو PDF')}
+async function aiSend(){const msg=$('#aiMsg').value.trim();if(!AIF&&!msg){aiSay('a','ارفع مخطط أو اكتب رسالة.');return}
+ aiSay('u',(AIF?$('#aiFn').textContent+'\n':'')+(msg||'حلل المخطط'));$('#aiMsg').value='';const btn=$('[data-ai=send]');btn.disabled=true;aiSay('a','جاري التحليل...');
+ try{const r=await fetch(AI_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,file:AIF,prompt:AI_PROMPT})});
+  if(!r.ok)throw new Error(r.status==404?'NOSERVER':'HTTP '+r.status);const j=await r.json();
+  if(j.reply)aiSay('a',j.reply);if(j.data)aiPreview(j.data);}
+ catch(e){aiSay('a',e.message=='NOSERVER'||e instanceof TypeError?'خدمة التحليل غير مفعّلة بعد على هذا الموقع (تحتاج دالة خادم ومفتاح ذكاء اصطناعي). استخدم الوضع اليدوي أدناه: انسخ التعليمات، أعطها مع المخطط لأي ذكاء اصطناعي، والصق الرد هنا.':'تعذر التحليل: '+e.message)}
+ btn.disabled=false}
+document.addEventListener('change',e=>{if(e.target.id=='aiFile')aiFile(e.target.files[0])});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-ai]');if(!b)return;const a=b.dataset.ai;
+ if(a=='send')aiSend();if(a=='apply')aiApply();
+ if(a=='copy'){navigator.clipboard&&navigator.clipboard.writeText(AI_PROMPT).then(()=>toast('تم نسخ التعليمات ✓'),()=>toast('تعذر النسخ'))}
+ if(a=='prev'){const t=$('#aiJson').value.trim();if(t)aiPreview(t)}});
+aiSay('a','مرحبا. ارفع مخطط (صورة أو PDF) وأحلله وأعبي بيانات المشروع تلقائيا: الحفر والخرسانة والحديد والمباني والتشطيبات. بعدها تراجع وتطبق.');
 
 const xe=s=>String(s).replace(/&quot;/g,'"').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const colL=i=>String.fromCharCode(65+i);
@@ -404,3 +385,4 @@ function buildXlsx(TM){
 </script>
 </body>
 </html>
+
